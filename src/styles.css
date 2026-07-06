@@ -1,0 +1,672 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-violet: var(--petrol);
+  --color-violet-glow: var(--petrol);
+  --color-cyan-glow: var(--petrol-light);
+  --color-petrol: var(--petrol);
+  --color-petrol-light: var(--petrol-light);
+  --color-petrol-deep: var(--petrol-deep);
+}
+
+:root {
+  --radius: 1rem;
+  /* LIGHT theme matched 1:1 to the Agjconfin brochure */
+  --background: oklch(0.985 0.005 200);
+  --foreground: oklch(0.22 0.04 220);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.04 220);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.04 220);
+  --primary: oklch(0.36 0.07 215);
+  --primary-foreground: oklch(0.99 0.005 200);
+  --secondary: oklch(0.95 0.01 210);
+  --secondary-foreground: oklch(0.22 0.04 220);
+  --muted: oklch(0.94 0.012 210);
+  --muted-foreground: oklch(0.42 0.03 220);
+  --accent: oklch(0.6 0.1 200);
+  --accent-foreground: oklch(0.99 0.005 200);
+  --destructive: oklch(0.6 0.24 25);
+  --destructive-foreground: oklch(0.98 0.01 200);
+  --border: oklch(0.36 0.07 215 / 18%);
+  --input: oklch(0.36 0.07 215 / 22%);
+  --ring: oklch(0.5 0.1 210);
+
+  /* Brand teals from the brochure */
+  --petrol-deep: #062e3c;
+  --petrol: #0d4a5c;
+  --petrol-light: #2a8aa0;
+  --teal-glow: #4fb1c4;
+
+  --gradient-hero: linear-gradient(180deg, #f4f6f8 0%, #eaf0f3 100%);
+  --gradient-petrol: linear-gradient(135deg, var(--petrol-deep), var(--petrol-light));
+  --shadow-soft: 0 10px 30px -10px rgba(13, 74, 92, 0.18);
+  --shadow-glass: 0 8px 32px 0 rgba(13, 74, 92, 0.12);
+
+  /* Signature easing for every premium micro-interaction (Apple/Stripe-like
+     ease-out-quint): fast start, long soft landing. */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--gradient-hero);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .glass {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.55));
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid rgba(13, 74, 92, 0.12);
+    box-shadow: var(--shadow-glass);
+    transition:
+      border-color 0.45s var(--ease-premium),
+      box-shadow 0.45s var(--ease-premium);
+  }
+  .glass:hover {
+    border-color: rgba(13, 74, 92, 0.26);
+    box-shadow:
+      0 24px 60px -18px rgba(13, 74, 92, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  }
+  .glass-strong {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(13, 74, 92, 0.16);
+    box-shadow: 0 18px 50px -12px rgba(13, 74, 92, 0.22);
+  }
+  .glass-petrol {
+    background: linear-gradient(135deg, var(--petrol-deep), var(--petrol));
+    color: white;
+    box-shadow: 0 18px 40px -12px rgba(13, 74, 92, 0.45);
+  }
+  .text-gradient {
+    background: linear-gradient(
+      135deg,
+      var(--petrol-deep) 0%,
+      var(--petrol) 55%,
+      var(--petrol-light) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .petrol-ribbon {
+    background: var(--petrol);
+    color: white;
+    clip-path: polygon(0 0, calc(100% - 32px) 0, 100% 50%, calc(100% - 32px) 100%, 0 100%);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Subtle "data flowing" motion for the Italy network connection lines.
+   Cheap: animates only stroke-dashoffset on a handful of thin lines. */
+@keyframes line-flow {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+.line-flow {
+  animation: line-flow 2.4s linear infinite;
+}
+
+/* ============================================================
+   DARK THEME — petrol-forward, matched to the brand palette.
+   Toggled by adding `.dark` on <html> (see ThemeProvider).
+   ============================================================ */
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: oklch(0.17 0.025 226);
+  --foreground: oklch(0.93 0.012 210);
+  --card: oklch(0.215 0.03 226);
+  --card-foreground: oklch(0.93 0.012 210);
+  --popover: oklch(0.2 0.03 226);
+  --popover-foreground: oklch(0.93 0.012 210);
+  --primary: oklch(0.72 0.1 200);
+  --primary-foreground: oklch(0.16 0.03 230);
+  --secondary: oklch(0.27 0.03 225);
+  --secondary-foreground: oklch(0.93 0.012 210);
+  --muted: oklch(0.26 0.025 225);
+  --muted-foreground: oklch(0.74 0.02 215);
+  --accent: oklch(0.7 0.1 200);
+  --accent-foreground: oklch(0.16 0.03 230);
+  --destructive: oklch(0.62 0.22 25);
+  --destructive-foreground: oklch(0.98 0.01 200);
+  --border: oklch(0.85 0.05 205 / 14%);
+  --input: oklch(0.85 0.05 205 / 18%);
+  --ring: oklch(0.7 0.1 205);
+
+  /* Brand teals shifted brighter so they read on a dark ground */
+  --petrol-deep: #0a3a49;
+  --petrol: #1d7088;
+  --petrol-light: #4fb1c4;
+  --teal-glow: #7fd4e3;
+
+  --gradient-hero: linear-gradient(180deg, #08171d 0%, #0a1f27 100%);
+  --gradient-petrol: linear-gradient(135deg, #0a3a49, #2a8aa0);
+  --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* Glass surfaces need darker fills in dark mode */
+.dark .glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(127, 212, 227, 0.14);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+.dark .glass:hover {
+  border-color: rgba(127, 212, 227, 0.32);
+  box-shadow:
+    0 24px 60px -18px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.dark .glass-strong {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.035));
+  border: 1px solid rgba(127, 212, 227, 0.18);
+  box-shadow: 0 18px 50px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Testimonial cards sit in a stack; in dark mode the standard translucent
+   glass let the cards behind bleed through and made the text hard to read.
+   Give the current card an almost-opaque fill so it cleanly occludes the rest. */
+.glass-strong.testimonial-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.99), rgba(255, 255, 255, 0.96));
+}
+.dark .glass-strong.testimonial-card {
+  background: linear-gradient(135deg, rgb(20, 48, 58), rgb(11, 31, 39));
+}
+.dark .glass-petrol {
+  background: linear-gradient(135deg, #0a3a49, #1d7088);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* Brighter gradient text so it stays readable on the dark ground */
+.dark .text-gradient {
+  background: linear-gradient(135deg, #4fb1c4 0%, #7fd4e3 55%, #a9e6f0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   REDUCED MOTION — driven by the "Riduci animazioni" toggle.
+   ReducedMotionProvider adds `.reduce-motion` on <html>.
+   This neutralises every CSS-driven animation/transition;
+   framer-motion components are handled in parallel by
+   <MotionConfig reducedMotion="always">.
+   ============================================================ */
+.reduce-motion,
+.reduce-motion * {
+  scroll-behavior: auto !important;
+}
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0ms !important;
+}
+.reduce-motion .animate-float,
+.reduce-motion .animate-pulse-glow,
+.reduce-motion .animate-pulse {
+  animation: none !important;
+}
+
+/* ============================================================
+   ILLUSTRATIONS — flat animated SVG figures ("omini").
+   Composition is faithful to the brochure illustration grid;
+   palette is mapped onto the brand petrol/teal so the scenes
+   sit naturally on the site and adapt to the dark theme.
+   Colours are driven by tokens so a single edit retheming
+   everything. Motion is CSS-keyframe based (cheap) and is
+   neutralised by the global .reduce-motion guard below.
+   ============================================================ */
+:root {
+  --il-ink: #0d3a49; /* hair, trousers, shoes, primary dark fills   */
+  --il-top: #ffffff; /* shirt / torso (the light garment)           */
+  --il-face: #f1ece6; /* face                                        */
+  --il-accent: #1d7088; /* brand accent — nodes, euro, cube faces      */
+  --il-accent-2: #2a8aa0; /* secondary accent                            */
+  --il-accent-soft: #9cc7d2; /* soft accent — light cube faces, highlights  */
+  --il-surface: #ffffff; /* object surfaces (buildings, charts, bubbles)*/
+  --il-soft: #e9f0f3; /* very light secondary fill                   */
+  --il-line: #b9cdd5; /* thin construction / guide lines + outlines  */
+  --il-glow: #4fb1c4; /* glow halos                                  */
+}
+.dark {
+  --il-ink: #93d7e6; /* light so the figure reads on the dark ground*/
+  --il-top: #d8eff4;
+  --il-face: #e7f5f8;
+  --il-accent: #4fb1c4;
+  --il-accent-2: #7fd4e3;
+  --il-accent-soft: #2c6576;
+  --il-surface: #15414f;
+  --il-soft: #102f3a;
+  --il-line: rgba(143, 214, 228, 0.3);
+  --il-glow: #7fd4e3;
+}
+
+/* Fill / stroke utilities consumed by the SVG illustrations */
+.il-ink {
+  fill: var(--il-ink);
+}
+.il-top {
+  fill: var(--il-top);
+}
+.il-face {
+  fill: var(--il-face);
+}
+.il-accent {
+  fill: var(--il-accent);
+}
+.il-accent-2 {
+  fill: var(--il-accent-2);
+}
+.il-accent-soft {
+  fill: var(--il-accent-soft);
+}
+.il-surface {
+  fill: var(--il-surface);
+}
+.il-soft {
+  fill: var(--il-soft);
+}
+.il-glow {
+  fill: var(--il-glow);
+}
+.il-none {
+  fill: none;
+}
+.il-s {
+  stroke: var(--il-line);
+  fill: none;
+}
+.il-s-ink {
+  stroke: var(--il-ink);
+  fill: none;
+}
+.il-s-accent {
+  stroke: var(--il-accent);
+  fill: none;
+}
+
+/* ---- Illustration motion ---- */
+@keyframes il-dash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+@keyframes il-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.86);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+@keyframes il-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+@keyframes il-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes il-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes il-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes il-glowp {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.24;
+  }
+}
+
+.il-dash {
+  stroke-dasharray: 5 7;
+  animation: il-dash 1.6s linear infinite;
+}
+.il-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: il-pulse 2.6s ease-in-out infinite;
+}
+.il-breathe {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: il-breathe 4.5s ease-in-out infinite;
+}
+.il-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: il-spin 9s linear infinite;
+}
+.il-twinkle {
+  animation: il-twinkle 3s ease-in-out infinite;
+}
+.il-bob {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: il-bob 3.4s ease-in-out infinite;
+}
+.il-glowp {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: il-glowp 3.6s ease-in-out infinite;
+}
+
+/* Honour the "Riduci animazioni" toggle for every illustration animation. */
+.reduce-motion .il-dash,
+.reduce-motion .il-pulse,
+.reduce-motion .il-breathe,
+.reduce-motion .il-spin,
+.reduce-motion .il-twinkle,
+.reduce-motion .il-bob,
+.reduce-motion .il-glowp {
+  animation: none !important;
+}
+
+@keyframes il-rise {
+  0%,
+  100% {
+    transform: scaleY(0.82);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes il-sway {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+}
+.il-rise {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: il-rise 3.2s ease-in-out infinite;
+}
+.il-sway {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: il-sway 2.8s ease-in-out infinite;
+}
+.reduce-motion .il-rise,
+.reduce-motion .il-sway {
+  animation: none !important;
+}
+.il-s-top {
+  stroke: var(--il-top);
+  fill: none;
+}
+
+/* ============================================================
+   PREMIUM LAYER — micro-interactions & motion utilities.
+   Everything animates transform/opacity only (GPU-composited)
+   and is neutralised by the global .reduce-motion guard plus
+   the explicit opt-outs at the bottom of this block.
+   ============================================================ */
+
+/* Timing-function utility to pair with Tailwind's transition-* classes. */
+.tr-premium {
+  transition-timing-function: var(--ease-premium);
+}
+
+/* ---- Film grain: barely-there texture that kills flat digital look ---- */
+.gb-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.028;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.dark .gb-grain {
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* ---- Slow living gradient for key display headings ---- */
+.text-gradient-flow {
+  background-size: 220% 220%;
+  animation: hb-gradient-flow 9s ease-in-out infinite alternate;
+}
+@keyframes hb-gradient-flow {
+  from {
+    background-position: 0% 40%;
+  }
+  to {
+    background-position: 100% 60%;
+  }
+}
+
+/* ---- Light sweep across primary CTAs on hover ---- */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -70%;
+  width: 45%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.38) 50%, transparent);
+  transform: skewX(-18deg);
+  transition: left 0.7s var(--ease-premium);
+  pointer-events: none;
+}
+.btn-shine:hover::after {
+  left: 130%;
+}
+
+/* Honour the "Riduci animazioni" toggle for the premium layer. */
+.reduce-motion .text-gradient-flow {
+  animation: none !important;
+}
+
+/* ============================================================
+   GLOBAL BACKDROP — one continuous atmosphere for the whole
+   site. The brand light lives on a single fixed layer behind
+   every page, so no section ever shows a colour seam. No blur
+   filters, no JS: two drifting gradient fields + a hairline
+   data grid + film grain.
+   ============================================================ */
+.gb-mesh {
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  will-change: transform;
+}
+.gb-mesh--a {
+  background:
+    radial-gradient(42% 46% at 14% 20%, rgba(42, 138, 160, 0.18), transparent 68%),
+    radial-gradient(32% 38% at 86% 8%, rgba(79, 177, 196, 0.14), transparent 70%);
+  animation: gb-drift-a 48s ease-in-out infinite alternate;
+}
+.gb-mesh--b {
+  background:
+    radial-gradient(36% 42% at 80% 82%, rgba(13, 74, 92, 0.12), transparent 70%),
+    radial-gradient(28% 32% at 20% 90%, rgba(42, 138, 160, 0.09), transparent 72%);
+  animation: gb-drift-b 62s ease-in-out infinite alternate;
+}
+.dark .gb-mesh--a {
+  background:
+    radial-gradient(42% 46% at 14% 20%, rgba(79, 177, 196, 0.14), transparent 68%),
+    radial-gradient(32% 38% at 86% 8%, rgba(127, 212, 227, 0.09), transparent 70%);
+}
+.dark .gb-mesh--b {
+  background:
+    radial-gradient(36% 42% at 80% 82%, rgba(29, 112, 136, 0.2), transparent 70%),
+    radial-gradient(28% 32% at 20% 90%, rgba(79, 177, 196, 0.07), transparent 72%);
+}
+@keyframes gb-drift-a {
+  from {
+    transform: translate3d(-2.5%, -1.5%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2.5%, 2%, 0) scale(1.07);
+  }
+}
+@keyframes gb-drift-b {
+  from {
+    transform: translate3d(2%, 1.5%, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(-2%, -2%, 0) scale(1);
+  }
+}
+
+/* ============================================================
+   CARD HINT — pulsing "+" chip marking expandable cards.
+   The ring pings softly (~every 3s) so even a still page says
+   "there is more here"; on hover the plus rotates and a label
+   slides out. Box-shadow ping = zero layout, GPU-cheap.
+   ============================================================ */
+.hint-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  animation: hint-pulse 3.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes hint-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(42, 138, 160, 0.4);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 12px rgba(42, 138, 160, 0);
+  }
+}
+.dark .hint-ring {
+  animation-name: hint-pulse-dark;
+}
+@keyframes hint-pulse-dark {
+  0% {
+    box-shadow: 0 0 0 0 rgba(127, 212, 227, 0.45);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 12px rgba(127, 212, 227, 0);
+  }
+}
+
+/* Honour the "Riduci animazioni" toggle. */
+.reduce-motion .gb-mesh--a,
+.reduce-motion .gb-mesh--b,
+.reduce-motion .hint-ring {
+  animation: none !important;
+}
