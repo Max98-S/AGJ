@@ -135,9 +135,10 @@ function Ecosistema() {
             Dal laboratorio al mercato
           </h2>
           <p className="mt-6 text-muted-foreground">
-            Grazie ai nostri partner di ricerca, da più di 15 anni, ci siamo specializzati in nuove
-            soluzioni nel campo dei materiali applicati nei settori packaging, automotive,
-            aeronautico, elettronico, biomedicale, tessile, industria della carta etc.
+            Grazie ai nostri partner di ricerca e alla nostra consociata Jaber Innovation, da più di
+            15 anni ci siamo specializzati in nuove soluzioni nel campo dei materiali avanzati. In
+            particolare nei settori packaging, automotive, aeronautico, elettronico, biomedicale,
+            tessile, industria della carta etc.
           </p>
           <p className="mt-4 text-sm font-semibold text-petrol uppercase tracking-[0.15em]">
             Principali prodotti sviluppati:

@@ -44,7 +44,7 @@ export const serviceCards: ServiceCard[] = [
     id: 4,
     kind: "ricerca-sviluppo",
     title: "Ricerca & Sviluppo",
-    description: "Nanomateriali, biomateriali, coating funzionali e nanocompositi a base grafene.",
+    description: "Innovazione guidata dalla ricerca, dal laboratorio allo scale-up industriale.",
     tag: "R&D",
   },
   {

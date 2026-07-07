@@ -24,7 +24,7 @@ export const SERVICE_ILLUSTRATIONS: Record<ServiceKind, Meta> = {
     caption: "Trasformiamo intuizioni in innovazione concreta.",
     tag: "R&D",
     detail:
-      "In sinergia con la nostra rete di partner di ricerca, sviluppiamo soluzioni in coating funzionali, biomateriali, nanomateriali e compositi avanzati, accompagnando l'innovazione dal laboratorio allo scale-up industriale.",
+      "In sinergia con la nostra rete di partner di ricerca e con la consociata Jaber Innovation Srl, sviluppiamo soluzioni nel campo dei materiali avanzati come coating funzionali, biomateriali, nanomateriali, compositi avanzati, etc. Accompagnando l'innovazione dal laboratorio allo scale-up industriale.",
   },
   "finanza-agevolata": {
     Component: FinanzaAgevolata,

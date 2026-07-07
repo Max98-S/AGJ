@@ -44,7 +44,7 @@ function ChiSiamo() {
       <PageHeader
         eyebrow="Introduzione · Chi Siamo · I Nostri Obiettivi"
         title="Consulenza indipendente per chi costruisce il futuro."
-        subtitle="Agjconfin è una società di consulenza indipendente specializzata nel supportare imprese ed enti pubblici nei percorsi di crescita e sviluppo, attraverso interventi in ambito di innovazione, trasferimento tecnologico, finanza agevolata e operazioni straordinarie (M&A, leverage e management buy-out)."
+        subtitle="Offriamo servizi di consulenza finanziaria finalizzati all'accesso agli strumenti di finanza agevolata, supportando le imprese in tutte le fasi del processo, dall'analisi delle opportunità alla presentazione della domanda."
       />
 
       <section className="container mx-auto px-4 py-12">

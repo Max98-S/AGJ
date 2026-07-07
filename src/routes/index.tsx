@@ -18,6 +18,7 @@ import { AgjLogo } from "@/components/AgjLogo";
 import { CountUp } from "@/components/CountUp";
 import { HeroHighlight } from "@/components/ui/hero-highlight";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ContainerScroll } from "@/components/ui/container-scroll";
 import { ServiceCardStackSection } from "@/components/ServiceCardStackSection";
 import { Magnetic } from "@/components/Magnetic";
 import { CardHint } from "@/components/CardHint";
@@ -86,7 +87,7 @@ const highlights = [
     title: "R&D Applicata",
     desc: "Innovazione guidata dalla ricerca: affianchiamo le imprese nello sviluppo di soluzioni tecnologiche concrete e sostenibili.",
     detail:
-      "In sinergia con la nostra rete di partner di ricerca, sviluppiamo soluzioni in coating funzionali, biomateriali, nanomateriali e compositi avanzati, accompagnando l'innovazione dal laboratorio allo scale-up industriale.",
+      "Innovazione guidata dalla ricerca: insieme ai nostri partner ed alla consociata Jaber Innovation, affianchiamo le imprese nello sviluppo di soluzioni tecnologiche concrete e sostenibili. Sviluppiamo progetti nel campo dei materiali avanzati, biomateriali, nanomateriali e compositi, accompagnando l'innovazione dal laboratorio allo scale-up industriale.",
   },
 ];
 
@@ -359,48 +360,35 @@ function Home() {
       {/* CARD STACK — services carousel (shared with /servizi, always in sync) */}
       <ServiceCardStackSection />
 
-      {/* QUOTE */}
-      <section className="container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="glass-petrol rounded-[2.5rem] p-10 md:p-16 text-center relative overflow-hidden">
-            <Award className="mx-auto mb-6 text-white" size={36} />
-            <blockquote className="text-2xl md:text-4xl font-display font-medium leading-snug text-white">
-              "Trasformiamo idee e investimenti in{" "}
-              <span className="text-teal-200">crescita concreta e sostenibile.</span>"
-            </blockquote>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* CTA */}
-      <section className="container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="glass-strong rounded-3xl p-12 md:p-20 text-center relative overflow-hidden"
-        >
-          <Rocket className="mx-auto text-petrol mb-6" size={40} />
-          <h2 className="text-4xl md:text-5xl font-bold text-gradient text-gradient-flow">
+      {/* CTA FINALE — effetto container-scroll 3D (citazione che sale + card che si raddrizza) */}
+      <ContainerScroll
+        titleComponent={
+          <>
+            <Award className="mx-auto mb-6 text-petrol" size={36} />
+            <h2 className="font-display text-3xl font-medium leading-snug text-foreground md:text-5xl">
+              Trasformiamo idee e investimenti in{" "}
+              <span className="text-gradient">crescita concreta e sostenibile.</span>
+            </h2>
+          </>
+        }
+      >
+        <div className="px-6 text-center">
+          <Rocket className="mx-auto mb-6 text-petrol" size={40} />
+          <h3 className="text-gradient text-gradient-flow text-3xl font-bold md:text-5xl">
             Il prossimo passo verso la vostra crescita inizia da qui.
-          </h2>
-          <div className="mt-8 flex flex-wrap gap-4 justify-center">
+          </h3>
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Magnetic>
               <Link
                 to="/contatti"
-                className="btn-shine glass-petrol px-8 py-4 rounded-xl font-semibold inline-flex items-center gap-2 hover:scale-105 transition-transform tr-premium duration-500"
+                className="btn-shine glass-petrol tr-premium inline-flex items-center gap-2 rounded-xl px-8 py-4 font-semibold transition-transform duration-500 hover:scale-105"
               >
                 Contattaci <Users size={18} />
               </Link>
             </Magnetic>
           </div>
-        </motion.div>
-      </section>
+        </div>
+      </ContainerScroll>
     </PageShell>
   );
 }

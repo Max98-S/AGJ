@@ -13,11 +13,13 @@ import {
   FlaskConical,
   ShieldCheck,
 } from "lucide-react";
-import { PageShell, PageHeader } from "@/components/PageShell";
+import { PageShell } from "@/components/PageShell";
 import { GlassCard } from "@/components/GlassCard";
 import { FanCardStack } from "@/components/FanCardStack";
 import { OminiScrollLayer } from "@/components/OminiScrollLayer";
 import { ServiceCardStackSection } from "@/components/ServiceCardStackSection";
+import { ServiceZoomParallax } from "@/components/ServiceZoomParallax";
+import { ServiceMascotFinanziamenti } from "@/components/ServiceMascotFinanziamenti";
 
 export const Route = createFileRoute("/servizi")({
   head: () => ({
@@ -104,11 +106,12 @@ function Servizi() {
   return (
     <PageShell>
       <OminiScrollLayer variant="servizi" />
-      <PageHeader
-        eyebrow="I Nostri Servizi"
-        title="Una gamma completa per crescere, innovare, competere."
-        subtitle="Agjconfin supporta aziende e centri di ricerca nell'accesso ai finanziamenti pubblici e nell'Innovation Management con una gamma integrata di servizi."
-      />
+
+      {/* Intro "immersiva": la mascotte indica il titolo, poi cammina via a sinistra */}
+      <ServiceZoomParallax subtitle="Agjconfin supporta aziende e centri di ricerca nell'accesso ai finanziamenti pubblici e nell'Innovation Management con una gamma integrata di servizi." />
+
+      {/* La mascotte rientra da sinistra e indica i finanziamenti agevolati */}
+      <ServiceMascotFinanziamenti />
 
       {/* Carosello servizi — stesso componente/contenuto della home, sempre allineati */}
       <ServiceCardStackSection showCta={false} className="pt-4 pb-24" />
