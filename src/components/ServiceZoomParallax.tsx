@@ -32,9 +32,11 @@ export function ServiceZoomParallax({
   });
 
   // A riposo → indica. Appena scrolli → cammina a sinistra ed esce.
-  const pointOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
-  const walkOpacity = useTransform(scrollYProgress, [0.08, 0.2, 0.82, 0.98], [0, 1, 1, 0]);
-  const walkX = useTransform(scrollYProgress, [0.1, 1], ["0%", "-150%"]);
+  // Dissolvenze SENZA sovrapposizione (la posa a riposo sparisce prima che
+  // compaia la camminata) così non si vede il "fantasma" dell'altra figura.
+  const pointOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
+  const walkOpacity = useTransform(scrollYProgress, [0.07, 0.15, 0.85, 0.97], [0, 1, 1, 0]);
+  const walkX = useTransform(scrollYProgress, [0.08, 1], ["0%", "-155%"]);
 
   return (
     <section

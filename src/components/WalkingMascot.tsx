@@ -3,90 +3,100 @@
 import { motion, useReducedMotion } from "motion/react";
 
 /**
- * MASCOTTE AGJCONFIN — figure riusabili
+ * MASCOTTE AGJCONFIN — figure riusabili (movimenti fluidi allo scroll)
  *
- * - <WalkMascot/>  : omino con ciclo del passo (gambe/braccia che oscillano dai
- *                    giunti + rimbalzo del peso). Facing destra (dir=1) o
- *                    sinistra (dir=-1). Usato per le sequenze "che cammina".
- * - <MascotPointing/> : posa statica che indica (con targhetta AGJ + mano reale),
- *                    usata a riposo / a fine camminata.
+ * - <WalkMascot dir/>     : ciclo del passo umano con ginocchio articolato
+ *                           (anca + ginocchio + oscillazione braccia + rimbalzo
+ *                           del peso + leggero dondolio). dir 1 = verso destra,
+ *                           dir -1 = verso sinistra (speculare).
+ * - <MascotPointing dir/> : posa statica che indica.
+ * - <MascotTaDaa dir/>    : posa "ta-daa!" — presenta con entrambe le mani.
  *
- * I perni delle articolazioni usano originX/originY di framer-motion
- * (frazioni del bounding-box: originY:0 = giunto in alto, originY:1 = anca).
+ * La scritta AGJ viene contro-specchiata (scale(dir 1)) così resta sempre
+ * leggibile anche quando la figura è ribaltata.
  */
 
-const WALK = { duration: 0.9, repeat: Infinity, ease: "easeInOut" as const };
+const TIMES = [0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1];
+const WALK = {
+  duration: 1.05,
+  times: TIMES,
+  ease: "linear" as const,
+  repeat: Infinity,
+  repeatType: "loop" as const,
+};
+
+// cicli campionati su una sinusoide (9 punti) → interpolazione fluida
+const THIGH_N = [-24, -17, 0, 17, 24, 17, 0, -17, -24];
+const THIGH_F = [24, 17, 0, -17, -24, -17, 0, 17, 24];
+const KNEE_N = [22, 6.4, 0, 6.4, 22, 37.6, 44, 37.6, 22];
+const KNEE_F = [22, 37.6, 44, 37.6, 22, 6.4, 0, 6.4, 22];
+const ARM_N = [16, 11.3, 0, -11.3, -16, -11.3, 0, 11.3, 16];
+const ARM_F = [-16, -11.3, 0, 11.3, 16, 11.3, 0, -11.3, -16];
+const SWAY = [0, 1.1, 1.5, 1.1, 0, -1.1, -1.5, -1.1, 0];
+const BOB = [0, -2, -4, -2, 0, -2, -4, -2, 0];
+
+function AgjTag({ dir }: { dir: 1 | -1 }) {
+  return (
+    <>
+      <rect x="0.5" y="-39" width="11.5" height="6" rx="2.4" className="il-accent" />
+      <g transform={`translate(6.25 -34.6) scale(${dir} 1)`}>
+        <text x="0" y="0" textAnchor="middle" fill="var(--il-top)" style={{ font: "700 4px 'Space Grotesk', sans-serif", letterSpacing: "0.15px" }}>AGJ</text>
+      </g>
+    </>
+  );
+}
 
 /* ------------------------------------------------------------------ */
-/*  Omino che cammina (ciclo del passo)                                */
+/*  Omino che cammina — ciclo del passo con ginocchio                  */
 /* ------------------------------------------------------------------ */
-export function WalkMascot({
-  dir = 1,
-  className,
-}: {
-  dir?: 1 | -1;
-  className?: string;
-}) {
+export function WalkMascot({ dir = 1, className }: { dir?: 1 | -1; className?: string }) {
   const reduce = useReducedMotion();
   const spin = (kf: number[]) => (reduce ? {} : { rotate: kf });
 
+  const Leg = (thigh: number[], knee: number[], hipX: number) => (
+    <g transform={`translate(${hipX} 0)`}>
+      <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin(thigh)} transition={WALK}>
+        <path d="M0 0 L0 28" className="il-s-ink" strokeWidth="12" strokeLinecap="round" />
+        <g transform="translate(0 28)">
+          <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin(knee)} transition={WALK}>
+            <path d="M0 0 L0 26" className="il-s-ink" strokeWidth="11" strokeLinecap="round" />
+            <ellipse cx="1.5" cy="27" rx="9" ry="4.2" className="il-accent" />
+          </motion.g>
+        </g>
+      </motion.g>
+    </g>
+  );
+
+  const Arm = (kf: number[], shX: number) => (
+    <g transform={`translate(${shX} -48)`}>
+      <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin(kf)} transition={WALK}>
+        <path d="M0 0 L2 15 L0 30" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="0" cy="31" r="5" className="il-face" />
+      </motion.g>
+    </g>
+  );
+
   return (
-    <svg
-      viewBox="0 0 200 300"
-      className={className}
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden
-    >
-      {/* ombra */}
-      <ellipse cx="100" cy="276" rx="40" ry="7" className="il-ink" opacity="0.14" />
+    <svg viewBox="0 0 200 300" className={className} preserveAspectRatio="xMidYMax meet" aria-hidden>
+      <motion.g animate={reduce ? {} : { y: BOB }} transition={WALK}>
+        <g transform={`translate(100 176) scale(${1.7 * dir} 1.7)`}>
+          {/* arti lontani */}
+          {Leg(THIGH_F, KNEE_F, -2)}
+          {Arm(ARM_F, -11)}
 
-      {/* rimbalzo del peso su tutta la figura */}
-      <motion.g animate={reduce ? {} : { y: [0, -5, 0, -5, 0] }} transition={WALK}>
-        <g transform={`translate(100 178) scale(${1.7 * dir} 1.7)`}>
-          {/* gamba lontana */}
-          <g transform="translate(-2 0)">
-            <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin([-18, 18, -18])} transition={WALK}>
-              <path d="M0 0 L-2 28 L1 55" className="il-s-ink" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
-              <ellipse cx="3" cy="57" rx="9" ry="4.2" className="il-accent" />
-            </motion.g>
-          </g>
-
-          {/* braccio lontano */}
-          <g transform="translate(-11 -48)">
-            <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin([15, -15, 15])} transition={WALK}>
-              <path d="M0 0 L2 16 L0 32" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="0" cy="33" r="5" className="il-face" />
-            </motion.g>
-          </g>
-
-          {/* busto + testa (leggero dondolio attorno all'anca) */}
-          <motion.g style={{ originX: 0.5, originY: 1 }} animate={reduce ? {} : { rotate: [-1.6, 1.6, -1.6] }} transition={WALK}>
+          {/* busto + testa (dondolio attorno all'anca) */}
+          <motion.g style={{ originX: 0.5, originY: 1 }} animate={reduce ? {} : { rotate: SWAY }} transition={WALK}>
             <rect x="-14" y="-54" width="28" height="54" rx="13" className="il-top" stroke="var(--il-line)" strokeWidth="2" />
             <path d="M-13 -46 q-2 24 6 44 q-9 -8 -9 -24 q0 -12 3 -20 Z" className="il-soft" opacity="0.5" />
-            {/* targhetta AGJ */}
-            <rect x="0.5" y="-39" width="11.5" height="6" rx="2.4" className="il-accent" />
-            <text x="6.25" y="-34.6" textAnchor="middle" fill="var(--il-top)" style={{ font: "700 4px 'Space Grotesk', sans-serif", letterSpacing: "0.15px" }}>AGJ</text>
-            {/* collo + testa */}
+            <AgjTag dir={dir} />
             <rect x="-4" y="-60" width="8" height="9" rx="3" className="il-face" />
             <circle cx="0" cy="-66" r="13" className="il-face" />
             <path d="M-13 -67 a13 13 0 0 1 26 -1 q-13 -8 -26 1 Z" className="il-ink" />
           </motion.g>
 
-          {/* braccio vicino */}
-          <g transform="translate(11 -48)">
-            <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin([-15, 15, -15])} transition={WALK}>
-              <path d="M0 0 L2 16 L0 32" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="0" cy="33" r="5" className="il-face" />
-            </motion.g>
-          </g>
-
-          {/* gamba vicina */}
-          <g transform="translate(2 0)">
-            <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin([18, -18, 18])} transition={WALK}>
-              <path d="M0 0 L-2 28 L1 55" className="il-s-ink" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
-              <ellipse cx="3" cy="57" rx="9" ry="4.2" className="il-accent" />
-            </motion.g>
-          </g>
+          {/* arti vicini */}
+          {Arm(ARM_N, 11)}
+          {Leg(THIGH_N, KNEE_N, 2)}
         </g>
       </motion.g>
     </svg>
@@ -94,21 +104,18 @@ export function WalkMascot({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Omino che indica (posa statica)                                    */
+/*  Omino che indica (statico)                                         */
 /* ------------------------------------------------------------------ */
-export function MascotPointing({ className }: { className?: string }) {
+export function MascotPointing({ dir = 1, className }: { dir?: 1 | -1; className?: string }) {
   return (
     <svg viewBox="0 0 200 300" className={className} preserveAspectRatio="xMidYMax meet" aria-hidden>
-      <g transform="translate(86 150) scale(1.7)">
-        <ellipse cx="2" cy="66" rx="34" ry="6" className="il-ink" opacity="0.14" />
-
+      <g transform={`translate(100 150) scale(${1.7 * dir} 1.7)`}>
         {/* gamba dietro */}
         <path d="M-7 0 L-16 26 L-20 52" className="il-s-ink" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
         <ellipse cx="-23" cy="55" rx="10" ry="4.5" className="il-accent" transform="rotate(-18 -23 55)" />
         {/* gamba avanti */}
         <path d="M7 0 L16 30 L14 58" className="il-s-ink" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
         <ellipse cx="18" cy="60" rx="12" ry="5" className="il-accent" />
-        <ellipse cx="25" cy="58" rx="4" ry="3" className="il-accent" />
 
         {/* braccio dietro */}
         <path d="M-11 -48 L-20 -32 L-17 -16" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
@@ -118,11 +125,8 @@ export function MascotPointing({ className }: { className?: string }) {
         <g transform="rotate(5 0 -6)">
           <rect x="-14" y="-54" width="28" height="54" rx="13" className="il-top" stroke="var(--il-line)" strokeWidth="2" />
           <path d="M-13 -46 q-2 24 6 44 q-9 -8 -9 -24 q0 -12 3 -20 Z" className="il-soft" opacity="0.55" />
-          <rect x="0.5" y="-39" width="11.5" height="6" rx="2.4" className="il-accent" />
-          <text x="6.25" y="-34.6" textAnchor="middle" fill="var(--il-top)" style={{ font: "700 4px 'Space Grotesk', sans-serif", letterSpacing: "0.15px" }}>AGJ</text>
+          <AgjTag dir={dir} />
         </g>
-
-        {/* collo */}
         <rect x="-4" y="-60" width="8" height="9" rx="3" className="il-face" />
 
         {/* braccio che indica */}
@@ -136,6 +140,58 @@ export function MascotPointing({ className }: { className?: string }) {
         {/* testa */}
         <circle cx="2" cy="-66" r="13" className="il-face" />
         <path d="M-11 -67 a13 13 0 0 1 26 -1 q-13 -8 -26 1 Z" className="il-ink" />
+      </g>
+    </svg>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Omino "ta-daa!" — presenta con entrambe le mani                    */
+/* ------------------------------------------------------------------ */
+export function MascotTaDaa({ dir = 1, className }: { dir?: 1 | -1; className?: string }) {
+  const reduce = useReducedMotion();
+  return (
+    <svg viewBox="0 0 200 300" className={className} preserveAspectRatio="xMidYMax meet" aria-hidden>
+      <g transform={`translate(100 150) scale(${1.7 * dir} 1.7)`}>
+        {/* gambe piantate, leggermente aperte */}
+        <path d="M-4 0 L-8 28 L-10 56" className="il-s-ink" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
+        <ellipse cx="-13" cy="58" rx="11" ry="4.6" className="il-accent" />
+        <path d="M4 0 L8 28 L10 56" className="il-s-ink" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
+        <ellipse cx="13" cy="58" rx="11" ry="4.6" className="il-accent" />
+
+        {/* busto (piccola inclinazione all'indietro entusiasta) */}
+        <g transform="rotate(-3 0 0)">
+          <rect x="-14" y="-54" width="28" height="54" rx="13" className="il-top" stroke="var(--il-line)" strokeWidth="2" />
+          <path d="M-13 -46 q-2 24 6 44 q-9 -8 -9 -24 q0 -12 3 -20 Z" className="il-soft" opacity="0.5" />
+          <AgjTag dir={dir} />
+        </g>
+        <rect x="-4" y="-60" width="8" height="9" rx="3" className="il-face" />
+
+        {/* braccia alzate a "V" — entrambe le mani */}
+        <path d="M-11 -48 L-22 -62 L-30 -80" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="-31" cy="-81" r="4.8" className="il-face" />
+        <path d="M-33 -84 q3 -1 4.5 1" stroke="var(--il-face)" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+        <path d="M11 -48 L22 -62 L30 -80" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="31" cy="-81" r="4.8" className="il-face" />
+        <path d="M33 -84 q-3 -1 -4.5 1" stroke="var(--il-face)" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+
+        {/* testa (leggermente su) */}
+        <circle cx="0" cy="-67" r="13" className="il-face" />
+        <path d="M-13 -68 a13 13 0 0 1 26 -1 q-13 -8 -26 1 Z" className="il-ink" />
+
+        {/* scintille "ta-daa" */}
+        {[
+          [-38, -88], [-24, -92], [37, -88], [23, -93], [-40, -74], [39, -73],
+        ].map(([x, y], i) => (
+          <motion.g
+            key={i}
+            animate={reduce ? {} : { scale: [0.5, 1, 0.5], opacity: [0.2, 1, 0.2] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.18 }}
+            style={{ originX: 0.5, originY: 0.5 }}
+          >
+            <path d={`M${x} ${y - 3} L${x + 0.8} ${y} L${x} ${y + 3} L${x - 0.8} ${y} Z M${x - 3} ${y} L${x} ${y - 0.8} L${x + 3} ${y} L${x} ${y + 0.8} Z`} className="il-accent" />
+          </motion.g>
+        ))}
       </g>
     </svg>
   );
