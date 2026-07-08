@@ -164,10 +164,11 @@ export function MascotTaDaa({ dir = 1, className }: { dir?: 1 | -1; className?: 
         <rect x="-4" y="-60" width="8" height="9" rx="3" className="il-face" />
 
         {/* braccia: entrambe protese in avanti (verso il callout) — "voilà!" */}
-        <path d="M-11 -48 L8 -50 L30 -47" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="31" cy="-47" r="4.8" className="il-face" />
-        <path d="M11 -48 L25 -57 L41 -65" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="42" cy="-65.5" r="4.8" className="il-face" />
+        {/* braccia a "C" verso il callout — un braccio in alto, uno più in basso: invita al click */}
+        <path d="M-11 -48 L10 -44 L42 -40" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="43" cy="-40" r="4.8" className="il-face" />
+        <path d="M11 -48 L28 -56 L42 -66" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="43" cy="-66" r="4.8" className="il-face" />
 
         {/* testa (verso il richiamo) */}
         <circle cx="4" cy="-67" r="13" className="il-face" />
@@ -175,7 +176,7 @@ export function MascotTaDaa({ dir = 1, className }: { dir?: 1 | -1; className?: 
 
         {/* scintille "ta-daa" (sul lato del richiamo) */}
         {[
-          [48, -70], [35, -62], [51, -56], [31, -70], [44, -76], [55, -64],
+          [50, -64], [55, -53], [51, -42], [47, -70], [58, -58], [45, -50],
         ].map(([x, y], i) => (
           <motion.g
             key={i}
