@@ -131,10 +131,7 @@ export function MascotPointing({ dir = 1, className }: { dir?: 1 | -1; className
 
         {/* braccio che indica */}
         <path d="M11 -48 L28 -54 L44 -62" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
-        <ellipse cx="43.5" cy="-61" rx="4" ry="3.4" className="il-face" transform="rotate(-30 43.5 -61)" />
-        <path d="M44.5 -61.5 L51 -66" stroke="var(--il-face)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-        <circle cx="51.2" cy="-66.2" r="1.25" className="il-face" />
-        <path d="M41.5 -58 q2.4 -0.2 3.4 -1.8" stroke="var(--il-face)" strokeWidth="2.2" strokeLinecap="round" fill="none" />
+        <circle cx="46" cy="-63" r="5" className="il-face" />
 
         {/* testa */}
         <circle cx="2" cy="-66" r="13" className="il-face" />
@@ -169,10 +166,8 @@ export function MascotTaDaa({ dir = 1, className }: { dir?: 1 | -1; className?: 
         {/* braccia: entrambe protese in avanti (verso il callout) — "voilà!" */}
         <path d="M-11 -48 L8 -50 L30 -47" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
         <circle cx="31" cy="-47" r="4.8" className="il-face" />
-        <path d="M34 -47.5 q0 -3 -2.5 -4.2" stroke="var(--il-face)" strokeWidth="2.3" strokeLinecap="round" fill="none" />
         <path d="M11 -48 L25 -57 L41 -65" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
         <circle cx="42" cy="-65.5" r="4.8" className="il-face" />
-        <path d="M45 -66 q0.5 -3 -2 -4.8" stroke="var(--il-face)" strokeWidth="2.3" strokeLinecap="round" fill="none" />
 
         {/* testa (verso il richiamo) */}
         <circle cx="4" cy="-67" r="13" className="il-face" />

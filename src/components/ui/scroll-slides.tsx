@@ -1,31 +1,30 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
+import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "motion/react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
  * ScrollSlides — deck di slide a tutta pagina rivelate verticalmente allo scroll.
  *
- * La sezione è alta n×100vh; al suo interno un contenitore "sticky" resta fermo
- * mentre la colonna di slide scorre verso l'alto (una slide per schermata).
- * NON dirotta lo scroll globale (niente wheel-jacking): si scorre normalmente e
- * funziona anche su mobile. Su mobile / reduced-motion le slide vengono
- * semplicemente impilate.
+ * La sezione è alta n×100vh; un contenitore "sticky" resta fermo mentre la
+ * colonna di slide scorre verso l'alto (una slide per schermata). NON dirotta
+ * lo scroll globale (niente wheel-jacking): si scorre normalmente, funziona su
+ * mobile e non blocca la pagina.
+ *
+ * Importante per SSR/hydration: durante il render sul server e al primo render
+ * client viene mostrata la versione IMPILATA; l'effetto "pinned" (che usa
+ * useScroll + misurazioni del DOM) viene montato SOLO dopo il mount, in un
+ * sotto-componente dedicato. Così non ci sono errori di render lato server.
  */
 export function ScrollSlides({ slides }: { slides: ReactNode[] }) {
-  const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const isMobile = useIsMobile();
-  const n = slides.length;
+  const [mounted, setMounted] = useState(false);
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", `-${((n - 1) / n) * 100}%`]);
+  useEffect(() => setMounted(true), []);
 
-  if (reduce || isMobile) {
+  if (!mounted || reduce || isMobile) {
     return (
       <div className="flex flex-col">
         {slides.map((s, i) => (
@@ -36,6 +35,19 @@ export function ScrollSlides({ slides }: { slides: ReactNode[] }) {
       </div>
     );
   }
+
+  return <PinnedSlides slides={slides} />;
+}
+
+function PinnedSlides({ slides }: { slides: ReactNode[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const n = slides.length;
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", `-${((n - 1) / n) * 100}%`]);
 
   return (
     <div ref={ref} style={{ height: `${n * 100}vh` }} className="relative">
@@ -59,15 +71,7 @@ export function ScrollSlides({ slides }: { slides: ReactNode[] }) {
   );
 }
 
-function Dot({
-  progress,
-  index,
-  n,
-}: {
-  progress: ReturnType<typeof useScroll>["scrollYProgress"];
-  index: number;
-  n: number;
-}) {
+function Dot({ progress, index, n }: { progress: MotionValue<number>; index: number; n: number }) {
   const center = n > 1 ? index / (n - 1) : 0;
   const span = n > 1 ? 0.5 / (n - 1) : 0.5;
   const opacity = useTransform(progress, [center - span, center, center + span], [0.3, 1, 0.3]);
