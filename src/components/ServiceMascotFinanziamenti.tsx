@@ -25,12 +25,12 @@ export function ServiceMascotFinanziamenti() {
     offset: ["start end", "end start"],
   });
 
-  // Entra da destra → va a sinistra camminando → arriva → "ta-daa!".
-  // Anticipato: il "ta-daa" è già in corso quando la sezione è ben in vista.
-  const walkX = useTransform(scrollYProgress, [0.03, 0.28], ["135%", "0%"]);
-  const walkOpacity = useTransform(scrollYProgress, [0.03, 0.11, 0.26, 0.34], [0, 1, 1, 0]);
-  const tadaaOpacity = useTransform(scrollYProgress, [0.32, 0.42], [0, 1]);
-  const tadaaPop = useTransform(scrollYProgress, [0.32, 0.42], [0.85, 1]);
+  // Entra da destra → va verso il centro camminando (più strada) → arriva
+  // vicino al richiamo → "ta-daa!". Anticipato: già fatto quando è in vista.
+  const walkX = useTransform(scrollYProgress, [0.03, 0.3], ["165%", "0%"]);
+  const walkOpacity = useTransform(scrollYProgress, [0.03, 0.11, 0.28, 0.36], [0, 1, 1, 0]);
+  const tadaaOpacity = useTransform(scrollYProgress, [0.34, 0.44], [0, 1]);
+  const tadaaPop = useTransform(scrollYProgress, [0.34, 0.44], [0.85, 1]);
 
   const Callout = (
     <div className="max-w-md">
@@ -85,8 +85,8 @@ export function ServiceMascotFinanziamenti() {
         </motion.div>
       </div>
 
-      {/* mascotte: entra da destra, cammina a sinistra, poi "ta-daa!" */}
-      <div className="pointer-events-none absolute bottom-[4%] right-[6%] z-0 w-52 sm:right-[8%] sm:w-56 lg:right-[12%] lg:w-64">
+      {/* mascotte: entra da destra, cammina fin verso il centro, poi "ta-daa!" accanto al richiamo */}
+      <div className="pointer-events-none absolute bottom-[4%] left-[44%] z-0 w-52 sm:left-[46%] sm:w-56 lg:w-60">
         <motion.div style={{ opacity: walkOpacity, x: walkX }} className="will-change-transform">
           <WalkMascot dir={-1} className="block h-auto w-full" />
         </motion.div>
