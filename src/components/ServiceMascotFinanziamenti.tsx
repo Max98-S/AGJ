@@ -26,10 +26,11 @@ export function ServiceMascotFinanziamenti() {
   });
 
   // Entra da destra → va a sinistra camminando → arriva → "ta-daa!".
-  const walkX = useTransform(scrollYProgress, [0.06, 0.52], ["135%", "0%"]);
-  const walkOpacity = useTransform(scrollYProgress, [0.06, 0.16, 0.5, 0.58], [0, 1, 1, 0]);
-  const tadaaOpacity = useTransform(scrollYProgress, [0.56, 0.66], [0, 1]);
-  const tadaaPop = useTransform(scrollYProgress, [0.56, 0.66], [0.82, 1]);
+  // Anticipato: il "ta-daa" è già in corso quando la sezione è ben in vista.
+  const walkX = useTransform(scrollYProgress, [0.03, 0.28], ["135%", "0%"]);
+  const walkOpacity = useTransform(scrollYProgress, [0.03, 0.11, 0.26, 0.34], [0, 1, 1, 0]);
+  const tadaaOpacity = useTransform(scrollYProgress, [0.32, 0.42], [0, 1]);
+  const tadaaPop = useTransform(scrollYProgress, [0.32, 0.42], [0.85, 1]);
 
   const Callout = (
     <div className="max-w-md">

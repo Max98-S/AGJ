@@ -30,8 +30,8 @@ const THIGH_N = [-24, -17, 0, 17, 24, 17, 0, -17, -24];
 const THIGH_F = [24, 17, 0, -17, -24, -17, 0, 17, 24];
 const KNEE_N = [22, 6.4, 0, 6.4, 22, 37.6, 44, 37.6, 22];
 const KNEE_F = [22, 37.6, 44, 37.6, 22, 6.4, 0, 6.4, 22];
-const ARM_N = [16, 11.3, 0, -11.3, -16, -11.3, 0, 11.3, 16];
-const ARM_F = [-16, -11.3, 0, 11.3, 16, 11.3, 0, -11.3, -16];
+const ARM_N = [-18, -12.7, 0, 12.7, 18, 12.7, 0, -12.7, -18];
+const ARM_F = [18, 12.7, 0, -12.7, -18, -12.7, 0, 12.7, 18];
 const SWAY = [0, 1.1, 1.5, 1.1, 0, -1.1, -1.5, -1.1, 0];
 const BOB = [0, -2, -4, -2, 0, -2, -4, -2, 0];
 
@@ -70,7 +70,7 @@ export function WalkMascot({ dir = 1, className }: { dir?: 1 | -1; className?: s
   const Arm = (kf: number[], shX: number) => (
     <g transform={`translate(${shX} -48)`}>
       <motion.g style={{ originX: 0.5, originY: 0 }} animate={spin(kf)} transition={WALK}>
-        <path d="M0 0 L2 15 L0 30" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M0 0 L-0.5 15 L0 30" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
         <circle cx="0" cy="31" r="5" className="il-face" />
       </motion.g>
     </g>
@@ -131,11 +131,11 @@ export function MascotPointing({ dir = 1, className }: { dir?: 1 | -1; className
 
         {/* braccio che indica */}
         <path d="M11 -48 L28 -54 L44 -62" className="il-s-top" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
-        <ellipse cx="45" cy="-61" rx="6" ry="5" className="il-face" transform="rotate(-30 45 -61)" />
-        <path d="M46 -62.5 L58 -70.5" stroke="var(--il-face)" strokeWidth="3.6" strokeLinecap="round" fill="none" />
-        <circle cx="58.4" cy="-70.8" r="1.85" className="il-face" />
-        <path d="M42 -57.6 q3.6 -0.4 5.2 -2.6" stroke="var(--il-face)" strokeWidth="3.1" strokeLinecap="round" fill="none" />
-        <path d="M43 -63.2 q3 2.3 6 0.5" stroke="var(--il-line)" strokeWidth="0.8" fill="none" opacity="0.45" />
+        <ellipse cx="44" cy="-61" rx="5" ry="4.2" className="il-face" transform="rotate(-30 44 -61)" />
+        <path d="M45 -62 L54 -68" stroke="var(--il-face)" strokeWidth="3.1" strokeLinecap="round" fill="none" />
+        <circle cx="54.3" cy="-68.3" r="1.55" className="il-face" />
+        <path d="M41.5 -57.8 q3 -0.3 4.3 -2.2" stroke="var(--il-face)" strokeWidth="2.7" strokeLinecap="round" fill="none" />
+        <path d="M42.5 -63 q2.6 2 5 0.4" stroke="var(--il-line)" strokeWidth="0.7" fill="none" opacity="0.45" />
 
         {/* testa */}
         <circle cx="2" cy="-66" r="13" className="il-face" />
@@ -159,29 +159,29 @@ export function MascotTaDaa({ dir = 1, className }: { dir?: 1 | -1; className?: 
         <path d="M4 0 L8 28 L10 56" className="il-s-ink" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" />
         <ellipse cx="13" cy="58" rx="11" ry="4.6" className="il-accent" />
 
-        {/* busto (piccola inclinazione all'indietro entusiasta) */}
-        <g transform="rotate(-3 0 0)">
+        {/* busto: leggera inclinazione IN AVANTI, verso il richiamo */}
+        <g transform="rotate(4 0 0)">
           <rect x="-14" y="-54" width="28" height="54" rx="13" className="il-top" stroke="var(--il-line)" strokeWidth="2" />
           <path d="M-13 -46 q-2 24 6 44 q-9 -8 -9 -24 q0 -12 3 -20 Z" className="il-soft" opacity="0.5" />
           <AgjTag dir={dir} />
         </g>
         <rect x="-4" y="-60" width="8" height="9" rx="3" className="il-face" />
 
-        {/* braccia alzate a "V" — entrambe le mani */}
-        <path d="M-11 -48 L-22 -62 L-30 -80" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="-31" cy="-81" r="4.8" className="il-face" />
-        <path d="M-33 -84 q3 -1 4.5 1" stroke="var(--il-face)" strokeWidth="2.4" strokeLinecap="round" fill="none" />
-        <path d="M11 -48 L22 -62 L30 -80" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="31" cy="-81" r="4.8" className="il-face" />
-        <path d="M33 -84 q-3 -1 -4.5 1" stroke="var(--il-face)" strokeWidth="2.4" strokeLinecap="round" fill="none" />
+        {/* braccia: entrambe protese in avanti (verso il callout) — "voilà!" */}
+        <path d="M-11 -48 L6 -53 L26 -58" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="27" cy="-58.5" r="4.8" className="il-face" />
+        <path d="M30 -59 q0 -3 -2.5 -4.5" stroke="var(--il-face)" strokeWidth="2.3" strokeLinecap="round" fill="none" />
+        <path d="M11 -48 L25 -57 L41 -65" className="il-s-top" strokeWidth="9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="42" cy="-65.5" r="4.8" className="il-face" />
+        <path d="M45 -66 q0.5 -3 -2 -4.8" stroke="var(--il-face)" strokeWidth="2.3" strokeLinecap="round" fill="none" />
 
-        {/* testa (leggermente su) */}
-        <circle cx="0" cy="-67" r="13" className="il-face" />
-        <path d="M-13 -68 a13 13 0 0 1 26 -1 q-13 -8 -26 1 Z" className="il-ink" />
+        {/* testa (verso il richiamo) */}
+        <circle cx="4" cy="-67" r="13" className="il-face" />
+        <path d="M-9 -68 a13 13 0 0 1 26 -1 q-13 -8 -26 1 Z" className="il-ink" />
 
-        {/* scintille "ta-daa" */}
+        {/* scintille "ta-daa" (sul lato del richiamo) */}
         {[
-          [-38, -88], [-24, -92], [37, -88], [23, -93], [-40, -74], [39, -73],
+          [48, -70], [35, -62], [51, -56], [31, -70], [44, -76], [55, -64],
         ].map(([x, y], i) => (
           <motion.g
             key={i}
