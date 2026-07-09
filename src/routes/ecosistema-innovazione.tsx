@@ -3,7 +3,6 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { PageShell } from "@/components/PageShell";
 import { GlassCard } from "@/components/GlassCard";
-import { CinematicHero } from "@/components/ui/cinematic-landing-hero";
 import { Atom, FlaskConical, Layers, Cpu, BookOpen } from "lucide-react";
 import {
   Dialog,
@@ -74,11 +73,6 @@ function Ecosistema() {
 
   return (
     <PageShell>
-      {/* HERO CINEMATICO (effetto scroll-pinned GSAP) — full-bleed sotto la nav */}
-      <div className="-mt-32">
-        <CinematicHero />
-      </div>
-
       {/* SLIDE 1 — titolo a sinistra, rettangolo a destra */}
       <section className="flex min-h-[92vh] items-center px-4 py-16">
         <div className="container mx-auto grid items-center gap-8 md:grid-cols-2 md:gap-12">
