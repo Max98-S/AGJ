@@ -26,7 +26,8 @@ export function TrasferimentoTecnologico({ title }: { title?: string }) {
           strokeWidth="2"
           strokeLinecap="round"
         />
-        <g className="il-sway" style={{ transformOrigin: "53px 91px" }}>
+        {/* bandierina: fissa (l'animazione ruotava attorno a un'origine errata) */}
+        <g>
           <path d="M53 90 L65 93 L53 97 Z" className="il-accent" />
         </g>
         {/* pediment */}

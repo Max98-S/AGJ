@@ -189,7 +189,7 @@ function Home() {
               initial={{ opacity: 0, scale: 0.6, rotate: -10 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
               transition={{ delay: 0.4, duration: 0.9, type: "spring", stiffness: 90 }}
-              className="flex justify-center lg:justify-end"
+              className="flex justify-center lg:justify-center"
             >
               <motion.div
                 animate={{ y: [0, -10, 0] }}
@@ -197,7 +197,7 @@ function Home() {
               >
                 <AgjLogo
                   variant="mark"
-                  height="clamp(180px, 42vw, 420px)"
+                  height="clamp(240px, 52vw, 560px)"
                   className="drop-shadow-2xl"
                 />
               </motion.div>

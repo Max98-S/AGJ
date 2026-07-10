@@ -502,7 +502,8 @@
 .il-sway {
   transform-box: fill-box;
   transform-origin: left center;
-  animation: il-sway 2.8s ease-in-out infinite;
+  /* bandierina ferma: l'oscillazione ruotava attorno a un'origine sbagliata */
+  animation: none;
 }
 .reduce-motion .il-rise,
 .reduce-motion .il-sway {

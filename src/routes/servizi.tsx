@@ -12,14 +12,15 @@ import {
   Leaf,
   FlaskConical,
   ShieldCheck,
+  ArrowRight,
 } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { GlassCard } from "@/components/GlassCard";
 import { FanCardStack } from "@/components/FanCardStack";
 import { OminiScrollLayer } from "@/components/OminiScrollLayer";
 import { ServiceCardStackSection } from "@/components/ServiceCardStackSection";
-import { ServiceZoomParallax } from "@/components/ServiceZoomParallax";
-import { ServiceMascotFinanziamenti } from "@/components/ServiceMascotFinanziamenti";
+import { ServiceIllustration } from "@/components/illustrations";
+import { TextEffect } from "@/components/ui/text-effect";
 
 export const Route = createFileRoute("/servizi")({
   head: () => ({
@@ -107,11 +108,108 @@ function Servizi() {
     <PageShell>
       <OminiScrollLayer variant="servizi" />
 
-      {/* Intro "immersiva": la mascotte indica il titolo, poi cammina via a sinistra */}
-      <ServiceZoomParallax subtitle="Agjconfin supporta aziende e centri di ricerca nell'accesso ai finanziamenti pubblici e nell'Innovation Management con una gamma integrata di servizi." />
+      {/* HERO — titolo grande al centro; illustrazioni ai lati per riempire lo spazio */}
+      <section className="relative overflow-hidden px-4 pb-6 pt-8">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[70vmin] w-[70vmin] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(29,112,136,0.10),transparent_65%)] blur-2xl"
+        />
+        <div className="container relative mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="mx-auto max-w-4xl text-center"
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-petrol">
+              I nostri servizi
+            </span>
+            {/* stesso effetto del titolo di "Chi siamo" (blur, parola per parola) */}
+            <TextEffect
+              as="h1"
+              per="word"
+              preset="blur"
+              delay={0.1}
+              className="mx-auto mt-5 text-5xl font-bold leading-[1.05] text-gradient sm:text-6xl md:text-7xl"
+            >
+              Una gamma completa per crescere, innovare, competere.
+            </TextEffect>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+              Agjconfin supporta aziende e centri di ricerca nell'accesso ai finanziamenti pubblici
+              e nell'Innovation Management con una gamma integrata di servizi.
+            </p>
+          </motion.div>
 
-      {/* La mascotte rientra da sinistra e indica i finanziamenti agevolati */}
-      <ServiceMascotFinanziamenti />
+          {/* illustrazioni: trasferimento tecnologico a sinistra, innovation management in basso a destra */}
+          <div className="mt-2 grid items-end gap-6 md:mt-[-3rem] md:grid-cols-2">
+            <motion.div
+              initial={{ opacity: 0, x: -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.25 }}
+              className="order-2 md:order-1"
+            >
+              <div className="w-full max-w-md md:ml-[2%] lg:max-w-lg">
+                <ServiceIllustration kind="trasferimento-tecnologico" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35 }}
+              className="order-1 flex justify-center md:order-2 md:mt-16 md:justify-end"
+            >
+              <div className="w-full max-w-md md:mr-[2%] lg:max-w-lg">
+                <ServiceIllustration kind="innovation-management" />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* FINANZIAMENTI AGEVOLATI — titolo grande al centro, omino grande a sinistra */}
+      <section className="relative overflow-hidden px-4 py-12">
+        <div className="container mx-auto grid items-center gap-8 md:grid-cols-[1.05fr_1fr]">
+          {/* illustrazione Finanza Agevolata — grande, a sinistra */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7 }}
+            className="order-2 md:order-1"
+          >
+            <div className="mx-auto w-full max-w-xl lg:max-w-2xl">
+              <ServiceIllustration kind="finanza-agevolata" />
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="order-1 text-center md:order-2"
+          >
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-petrol">
+              Il nostro core
+            </span>
+            <h2 className="mt-4 text-4xl font-bold leading-[1.08] text-gradient md:text-6xl">
+              Finanziamenti agevolati
+            </h2>
+            <p className="mx-auto mt-6 max-w-md text-muted-foreground">
+              Individuiamo le opportunità di finanziamento più coerenti con il progetto e
+              accompagniamo l'azienda in ogni fase: dalla stesura della domanda alla gestione del
+              finanziamento, fino alla rendicontazione finale.
+            </p>
+            <Link
+              to="/contatti"
+              className="btn-shine glass-petrol mt-8 inline-flex items-center gap-2 rounded-xl px-8 py-4 font-semibold transition-transform duration-500 hover:scale-105"
+            >
+              Contattaci <ArrowRight size={18} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Carosello servizi — stesso componente/contenuto della home, sempre allineati */}
       <ServiceCardStackSection showCta={false} className="pt-4 pb-24" />

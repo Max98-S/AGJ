@@ -24,15 +24,35 @@ export function AgjLogo({
   if (variant === "mark") {
     return (
       <div
-        className={cn("inline-flex shrink-0 items-center justify-center", className)}
+        className={cn(
+          "inline-flex shrink-0 items-center justify-center text-petrol dark:text-teal-100",
+          className,
+        )}
         style={{ height, maxWidth: "100%" }}
         aria-label="AGJ"
+        role="img"
       >
-        <img
-          src={agjMark}
-          alt="AGJ"
-          draggable={false}
-          className="h-full w-auto max-w-full select-none object-contain"
+        {/*
+         * Il monogramma viene disegnato con una MASCHERA CSS e colorato con
+         * `currentColor`: solo il canale alpha del PNG viene usato, quindi il
+         * contorno resta pulito su qualunque sfondo (niente alone chiaro in
+         * dark mode) e il colore segue il tema.
+         */}
+        <span
+          aria-hidden
+          className="block h-full w-full"
+          style={{
+            backgroundColor: "currentColor",
+            WebkitMaskImage: `url(${agjMark})`,
+            maskImage: `url(${agjMark})`,
+            WebkitMaskSize: "contain",
+            maskSize: "contain",
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+            WebkitMaskPosition: "center",
+            maskPosition: "center",
+            aspectRatio: "1008 / 1045",
+          }}
         />
       </div>
     );
@@ -51,14 +71,22 @@ export function AgjLogo({
         className="relative inline-flex items-center justify-center rounded-full bg-petrol ring-1 ring-white/20"
         style={{ height: h, width: h }}
       >
-        {/* monogram recoloured to white so it reads on the petrol badge */}
-        <img
-          src={agjMark}
-          alt=""
-          draggable={false}
+        {/* monogramma in bianco tramite maschera: contorno pulito, niente filtri */}
+        <span
           aria-hidden
-          className="w-auto select-none object-contain"
-          style={{ height: h * 0.6, filter: "brightness(0) invert(1)" }}
+          className="block bg-white"
+          style={{
+            height: h * 0.6,
+            width: h * 0.6 * (1008 / 1045),
+            WebkitMaskImage: `url(${agjMark})`,
+            maskImage: `url(${agjMark})`,
+            WebkitMaskSize: "contain",
+            maskSize: "contain",
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+            WebkitMaskPosition: "center",
+            maskPosition: "center",
+          }}
         />
       </span>
       <span
