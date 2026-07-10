@@ -124,13 +124,16 @@ function Servizi() {
             <span className="text-xs font-semibold uppercase tracking-[0.3em] text-petrol">
               I nostri servizi
             </span>
-            {/* stesso effetto del titolo di "Chi siamo" (blur, parola per parola) */}
+            {/* stesso effetto del titolo di "Chi siamo" (blur, parola per parola).
+                NB: niente `text-gradient` qui — usa background-clip:text +
+                text-fill-color:transparent, e le parole (che TextEffect rende
+                come <span> figli) risulterebbero invisibili. */}
             <TextEffect
               as="h1"
               per="word"
               preset="blur"
               delay={0.1}
-              className="mx-auto mt-5 text-5xl font-bold leading-[1.05] text-gradient sm:text-6xl md:text-7xl"
+              className="mx-auto mt-5 text-5xl font-bold leading-[1.05] text-petrol dark:text-teal-100 sm:text-6xl md:text-7xl"
             >
               Una gamma completa per crescere, innovare, competere.
             </TextEffect>
@@ -167,47 +170,55 @@ function Servizi() {
         </div>
       </section>
 
-      {/* FINANZIAMENTI AGEVOLATI — titolo grande al centro, omino grande a sinistra */}
-      <section className="relative overflow-hidden px-4 py-12">
-        <div className="container mx-auto grid items-center gap-8 md:grid-cols-[1.05fr_1fr]">
-          {/* illustrazione Finanza Agevolata — grande, a sinistra */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7 }}
-            className="order-2 md:order-1"
-          >
-            <div className="mx-auto w-full max-w-xl lg:max-w-2xl">
-              <ServiceIllustration kind="finanza-agevolata" />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="order-1 text-center md:order-2"
-          >
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-petrol">
-              Il nostro core
-            </span>
-            <h2 className="mt-4 text-4xl font-bold leading-[1.08] text-gradient md:text-6xl">
-              Finanziamenti agevolati
-            </h2>
-            <p className="mx-auto mt-6 max-w-md text-muted-foreground">
-              Individuiamo le opportunità di finanziamento più coerenti con il progetto e
-              accompagniamo l'azienda in ogni fase: dalla stesura della domanda alla gestione del
-              finanziamento, fino alla rendicontazione finale.
-            </p>
-            <Link
-              to="/contatti"
-              className="btn-shine glass-petrol mt-8 inline-flex items-center gap-2 rounded-xl px-8 py-4 font-semibold transition-transform duration-500 hover:scale-105"
+      <section className="container mx-auto px-4 py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center mb-12"
+        >
+          <span className="text-xs uppercase tracking-[0.3em] text-violet-glow">
+            Aree di Competenza
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4 text-gradient">
+            Finanziamenti Agevolati
+          </h2>
+          <p className="mt-6 text-muted-foreground">
+            Individuiamo le opportunità di finanziamento più coerenti con il progetto e
+            accompagniamo l'azienda in ogni fase: dalla stesura della domanda alla gestione del
+            finanziamento, fino alla rendicontazione finale.
+          </p>
+        </motion.div>
+        <div className="grid md:grid-cols-3 gap-5 auto-rows-fr">
+          {competences.map((c, i) => (
+            <motion.div
+              key={c.title}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
             >
-              Contattaci <ArrowRight size={18} />
-            </Link>
-          </motion.div>
+              <Link
+                to="/servizi/$tipo"
+                params={{ tipo: c.slug }}
+                className="block h-full group/comp"
+              >
+                <GlassCard className="h-full text-center transition-shadow group-hover/comp:shadow-xl group-hover/comp:-translate-y-1 duration-300">
+                  <c.icon
+                    className="mx-auto text-violet-glow mb-4 transition-transform tr-premium group-hover/comp:scale-110 group-hover/comp:-rotate-3 duration-500"
+                    size={30}
+                  />
+                  <h3 className="font-display font-semibold text-lg">{c.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground opacity-85 transition-opacity duration-500 group-hover/comp:opacity-100">
+                    {c.desc}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-petrol dark:text-teal-300 group-hover/comp:underline underline-offset-4">
+                    Scopri →
+                  </span>
+                </GlassCard>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -246,57 +257,6 @@ function Servizi() {
           className="max-w-3xl mx-auto text-center mb-12"
         >
           <span className="text-xs uppercase tracking-[0.3em] text-violet-glow">
-            Aree di Competenza
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4 text-gradient">
-            Finanziamenti Agevolati
-          </h2>
-          <p className="mt-6 text-muted-foreground">
-            Competenze integrate e specialistiche che accompagnano imprese ed enti in ogni fase del
-            percorso di sviluppo.
-          </p>
-        </motion.div>
-        <div className="grid md:grid-cols-3 gap-5 auto-rows-fr">
-          {competences.map((c, i) => (
-            <motion.div
-              key={c.title}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Link
-                to="/servizi/$tipo"
-                params={{ tipo: c.slug }}
-                className="block h-full group/comp"
-              >
-                <GlassCard className="h-full text-center transition-shadow group-hover/comp:shadow-xl group-hover/comp:-translate-y-1 duration-300">
-                  <c.icon
-                    className="mx-auto text-violet-glow mb-4 transition-transform tr-premium group-hover/comp:scale-110 group-hover/comp:-rotate-3 duration-500"
-                    size={30}
-                  />
-                  <h3 className="font-display font-semibold text-lg">{c.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground opacity-85 transition-opacity duration-500 group-hover/comp:opacity-100">
-                    {c.desc}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-petrol dark:text-teal-300 group-hover/comp:underline underline-offset-4">
-                    Scopri →
-                  </span>
-                </GlassCard>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      <section className="container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="max-w-3xl mx-auto text-center mb-12"
-        >
-          <span className="text-xs uppercase tracking-[0.3em] text-violet-glow">
             Agevolazioni Fiscali
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mt-4 text-gradient">
@@ -309,6 +269,30 @@ function Servizi() {
           viewport={{ once: true }}
         >
           <FanCardStack items={fiscal} />
+        </motion.div>
+      </section>
+
+      {/* CTA finale — contatti */}
+      <section className="container mx-auto px-4 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <h2 className="text-3xl font-bold text-gradient md:text-4xl">
+            Parliamo del vostro progetto.
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Dalla ricerca dei bandi alla rendicontazione finale: un unico partner per l'intero
+            percorso.
+          </p>
+          <Link
+            to="/contatti"
+            className="btn-shine glass-petrol mt-7 inline-flex items-center gap-2 rounded-xl px-8 py-4 font-semibold transition-transform duration-500 hover:scale-105"
+          >
+            Contattaci <ArrowRight size={18} />
+          </Link>
         </motion.div>
       </section>
     </PageShell>
