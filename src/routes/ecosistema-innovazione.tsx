@@ -1,9 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "motion/react";
-import { PageShell } from "@/components/PageShell";
+import { PageShell, PageHeader } from "@/components/PageShell";
 import { GlassCard } from "@/components/GlassCard";
-import { Atom, FlaskConical, Layers, Cpu, BookOpen } from "lucide-react";
+import {
+  Atom,
+  FlaskConical,
+  Layers,
+  Cpu,
+  BookOpen,
+  X,
+  Banknote,
+  FileSearch,
+  ClipboardCheck,
+  ArrowRight,
+} from "lucide-react";
+import { OminiScrollLayer } from "@/components/OminiScrollLayer";
 import {
   Dialog,
   DialogContent,
@@ -61,151 +73,208 @@ Il percorso di sviluppo comprende la definizione delle specifiche di progetto, l
   },
 ];
 
-const fade = {
-  initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.3 },
-  transition: { duration: 0.6, ease: "easeOut" as const },
-};
-
 function Ecosistema() {
   const [openCard, setOpenCard] = useState<(typeof focus)[0] | null>(null);
 
   return (
     <PageShell>
-      {/* SLIDE 1 — titolo a sinistra, rettangolo a destra */}
-      <section className="flex min-h-[92vh] items-center px-4 py-16">
-        <div className="container mx-auto grid items-center gap-8 md:grid-cols-2 md:gap-12">
-          <motion.div {...fade}>
-            <span className="inline-block glass rounded-full px-4 py-1.5 text-xs uppercase tracking-[0.2em] text-violet-glow">
-              Fase 5 · Attività di R&D
-            </span>
-            <h1 className="mt-6 text-4xl font-bold leading-[1.06] text-petrol dark:text-teal-100 md:text-6xl">
-              Un unico partner per l'intero percorso di innovazione
-            </h1>
-          </motion.div>
-          <motion.div {...fade} transition={{ ...fade.transition, delay: 0.15 }}>
-            <GlassCard className="md:p-10">
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                Dalla strategia alla ricerca applicata, dalla validazione tecnologica all'accesso ai
-                finanziamenti: coordiniamo competenze specialistiche per trasformare progetti
-                innovativi in risultati concreti.
-              </p>
-            </GlassCard>
-          </motion.div>
-        </div>
-      </section>
+      <OminiScrollLayer variant="general" />
+      <PageHeader
+        eyebrow="Fase 5 · Attività di R&D"
+        title="Un unico partner per l'intero percorso di innovazione"
+        subtitle="Dalla strategia alla ricerca applicata, dalla validazione tecnologica all'accesso ai finanziamenti: coordiniamo competenze specialistiche per trasformare progetti innovativi in risultati concreti."
+      />
 
-      {/* SLIDE 2 — modello integrato, centrale */}
-      <section className="flex min-h-[92vh] items-center px-4 py-16">
-        <motion.div {...fade} className="container mx-auto max-w-3xl text-center">
-          <span className="text-xs uppercase tracking-[0.3em] text-violet-glow">
-            Un modello integrato
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-semibold md:text-5xl">
-            Un modello integrato, <span className="text-gradient">non una semplice consulenza</span>
-          </h2>
-          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-            Abbiamo costruito una rete di competenze specialistiche nella ricerca pubblica e
-            privata, integrata con una struttura dedicata al trasferimento tecnologico. Affianchiamo
-            le imprese in ogni fase del percorso di innovazione, dalla definizione dell'idea alla sua
-            valorizzazione industriale. Un unico interlocutore, un processo strutturato e tutte le
-            competenze necessarie per trasformare la ricerca in opportunità concrete di crescita e
-            sviluppo.
-          </p>
-        </motion.div>
-      </section>
-
-      {/* SLIDE 3 — core focus + card cliccabili */}
-      <section className="flex min-h-[92vh] items-center px-4 py-16">
-        <div className="container mx-auto">
-          <motion.div {...fade} className="mx-auto mb-8 max-w-3xl text-center">
-            <span className="text-xs uppercase tracking-[0.3em] text-violet-glow">
-              Core focus & settori applicativi
-            </span>
-            <h2 className="mt-3 text-3xl font-bold text-gradient md:text-4xl">
-              Dal laboratorio al mercato
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              Grazie ai nostri partner di ricerca e alla nostra consociata Jaber Innovation, da più
-              di 15 anni ci siamo specializzati in nuove soluzioni nel campo dei materiali avanzati.
-              In particolare nei settori packaging, automotive, aeronautico, elettronico,
-              biomedicale, tessile, industria della carta etc.
-            </p>
-            <p className="mt-3 text-xs font-semibold uppercase tracking-[0.15em] text-petrol">
-              Principali prodotti sviluppati:
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {focus.map((f, i) => (
-              <motion.button
-                key={f.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                onClick={() => setOpenCard(f)}
-                className="group h-full text-left"
-              >
-                <GlassCard className="flex h-full flex-col transition-transform duration-300 group-hover:-translate-y-1">
-                  <f.icon className="mb-3 text-violet-glow" size={28} />
-                  <h3 className="font-display text-lg font-semibold leading-tight">{f.title}</h3>
-                  <p className="mt-2 flex-1 text-sm text-muted-foreground">{f.desc}</p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-petrol dark:text-teal-300 group-hover:underline group-hover:underline-offset-4">
-                    <BookOpen size={13} />
-                    Leggi di più
-                  </span>
-                </GlassCard>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SLIDE 4 — citazione finale */}
-      <section className="flex min-h-[92vh] items-center px-4 py-16">
-        <motion.div {...fade} className="container mx-auto max-w-4xl">
-          <div className="glass-petrol relative overflow-hidden rounded-[2.5rem] p-10 text-center md:p-16">
-            <blockquote className="font-display text-2xl font-medium leading-snug text-white md:text-3xl">
-              "Le imprese non hanno bisogno di dieci fornitori diversi per innovare. Hanno bisogno di
-              un partner capace di coordinare{" "}
-              <span className="text-teal-200">competenze, ricerca e strumenti finanziari</span> in un
-              unico percorso orientato ai risultati."
+      {/* Citazione — punto 10 */}
+      <section className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="glass-petrol rounded-[2.5rem] p-8 md:p-12 text-center relative overflow-hidden">
+            <blockquote className="text-xl md:text-2xl font-display font-medium leading-snug text-white">
+              "Le imprese non hanno bisogno di dieci fornitori diversi per innovare. Hanno bisogno
+              di un partner capace di coordinare{" "}
+              <span className="text-teal-200">competenze, ricerca e strumenti finanziari</span> in
+              un unico percorso orientato ai risultati."
             </blockquote>
           </div>
         </motion.div>
       </section>
 
-      {/* Modale flash-card */}
-      <Dialog open={openCard !== null} onOpenChange={(open) => !open && setOpenCard(null)}>
-        <DialogContent className="max-h-[80vh] max-w-2xl overflow-y-auto">
-          {openCard && (
-            <>
-              <DialogHeader>
-                <div className="mb-2 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet/20 text-violet-glow">
-                    <openCard.icon size={20} />
-                  </div>
-                  <DialogTitle className="font-display text-xl leading-tight">
-                    {openCard.title}
-                  </DialogTitle>
+      {/* Modello integrato — punto 11 */}
+      <section className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          <GlassCard className="md:p-10">
+            <span className="text-xs uppercase tracking-[0.3em] text-violet-glow">
+              Un modello integrato
+            </span>
+            <h2 className="text-3xl md:text-4xl font-display font-semibold mt-4">
+              Un modello integrato,{" "}
+              <span className="text-gradient">non una semplice consulenza</span>
+            </h2>
+            <p className="mt-6 text-muted-foreground text-lg leading-relaxed">
+              Abbiamo costruito una rete di competenze specialistiche nella ricerca pubblica e
+              privata, integrata con una struttura dedicata al trasferimento tecnologico.
+              Affianchiamo le imprese in ogni fase del percorso di innovazione, dalla definizione
+              dell'idea alla sua valorizzazione industriale. Un unico interlocutore, un processo
+              strutturato e tutte le competenze necessarie per trasformare la ricerca in opportunità
+              concrete di crescita e sviluppo.
+            </p>
+          </GlassCard>
+        </motion.div>
+      </section>
+
+      {/* Il nostro core — Finanziamenti agevolati (con rendicontazione) */}
+      <section className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-center">
+            <div>
+              <span className="text-xs uppercase tracking-[0.3em] text-petrol dark:text-teal-300">
+                Il nostro core
+              </span>
+              <h2 className="mt-3 text-3xl md:text-4xl font-bold text-gradient">
+                Finanziamenti agevolati
+              </h2>
+              <p className="mt-5 text-muted-foreground leading-relaxed">
+                Individuiamo le opportunità di finanziamento più coerenti con il progetto e
+                accompagniamo l'azienda in ogni fase: dalla stesura della domanda alla gestione
+                del finanziamento, fino alla rendicontazione finale.
+              </p>
+            </div>
+
+            <div className="grid gap-8 sm:grid-cols-3">
+              {[
+                { icon: FileSearch, t: "Analisi", d: "Individuiamo il bando più coerente con il progetto." },
+                { icon: Banknote, t: "Domanda & gestione", d: "Stesura della domanda e gestione del finanziamento." },
+                { icon: ClipboardCheck, t: "Rendicontazione", d: "Vi accompagniamo fino alla rendicontazione finale." },
+              ].map((s) => (
+                <div key={s.t}>
+                  <s.icon className="mb-3 text-petrol dark:text-teal-300" size={24} />
+                  <h3 className="font-display text-sm font-semibold leading-tight">{s.t}</h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{s.d}</p>
                 </div>
-                <DialogDescription className="text-sm text-muted-foreground">
-                  {openCard.desc}
-                </DialogDescription>
-              </DialogHeader>
-              <div className="mt-4 space-y-4">
-                {openCard.detail.split("\n\n").map((paragraph, idx) => (
-                  <p key={idx} className="text-sm leading-relaxed text-muted-foreground">
-                    {paragraph}
-                  </p>
-                ))}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      <section className="container mx-auto px-4 py-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center mb-8"
+        >
+          <span className="text-xs uppercase tracking-[0.3em] text-violet-glow">
+            Core focus & settori applicativi
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mt-4 text-gradient">
+            Dal laboratorio al mercato
+          </h2>
+          <p className="mt-6 text-muted-foreground">
+            Grazie ai nostri partner di ricerca e alla nostra consociata Jaber Innovation, da più di
+            15 anni ci siamo specializzati in nuove soluzioni nel campo dei materiali avanzati. In
+            particolare nei settori packaging, automotive, aeronautico, elettronico, biomedicale,
+            tessile, industria della carta etc.
+          </p>
+          <p className="mt-4 text-sm font-semibold text-petrol uppercase tracking-[0.15em]">
+            Principali prodotti sviluppati:
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5" style={{ perspective: 1200 }}>
+          {focus.map((f, i) => (
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <GlassCard className="h-full flex flex-col">
+                <f.icon className="text-violet-glow mb-4" size={28} />
+                <h3 className="font-display font-semibold text-lg">{f.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground flex-1">{f.desc}</p>
+                <button
+                  onClick={() => setOpenCard(f)}
+                  className="mt-4 self-start inline-flex items-center gap-1.5 text-xs font-semibold text-petrol dark:text-teal-300 hover:underline hover:underline-offset-4 transition"
+                >
+                  <BookOpen size={13} />
+                  Leggi di più
+                </button>
+              </GlassCard>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Dialog modal flash card */}
+        <Dialog open={openCard !== null} onOpenChange={(open) => !open && setOpenCard(null)}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            {openCard && (
+              <>
+                <DialogHeader>
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-xl bg-violet/20 flex items-center justify-center text-violet-glow">
+                      <openCard.icon size={20} />
+                    </div>
+                    <DialogTitle className="font-display text-xl leading-tight">
+                      {openCard.title}
+                    </DialogTitle>
+                  </div>
+                  <DialogDescription className="text-sm text-muted-foreground">
+                    {openCard.desc}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="mt-4 space-y-4">
+                  {openCard.detail.split("\n\n").map((paragraph, idx) => (
+                    <p key={idx} className="text-sm leading-relaxed text-muted-foreground">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
+      </section>
+
+      {/* CTA finale */}
+      <section className="container mx-auto px-4 py-14">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-gradient">
+            Parliamo del vostro progetto.
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Dalla ricerca applicata all'accesso ai finanziamenti: un unico partner per l'intero
+            percorso.
+          </p>
+          <Link
+            to="/contatti"
+            className="btn-shine glass-petrol mt-7 inline-flex items-center gap-2 rounded-xl px-8 py-4 font-semibold transition-transform duration-500 hover:scale-105"
+          >
+            Contattaci <ArrowRight size={18} />
+          </Link>
+        </motion.div>
+      </section>
     </PageShell>
   );
 }
