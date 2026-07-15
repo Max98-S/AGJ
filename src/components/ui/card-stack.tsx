@@ -84,6 +84,11 @@ export function CardStack<T extends CardStackItem>({
   const len = items.length;
   const [active, setActive] = React.useState(() => wrapIndex(initialIndex, len));
   const [hovering, setHovering] = React.useState(false);
+  // Touch/pointer swipe: record the gesture start, and if it travels far
+  // enough horizontally, advance the deck. `swipedRef` then suppresses the
+  // synthetic click so a swipe never doubles as a tap-to-open.
+  const pointerStart = React.useRef<{ x: number; y: number } | null>(null);
+  const swipedRef = React.useRef(false);
 
   React.useEffect(() => {
     setActive((a) => wrapIndex(a, len));
@@ -136,6 +141,32 @@ export function CardStack<T extends CardStackItem>({
       onKeyDown={onKeyDown}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
+      onPointerDown={(e) => {
+        pointerStart.current = { x: e.clientX, y: e.clientY };
+        swipedRef.current = false;
+      }}
+      onPointerUp={(e) => {
+        const s = pointerStart.current;
+        pointerStart.current = null;
+        if (!s) return;
+        const dx = e.clientX - s.x;
+        const dy = e.clientY - s.y;
+        if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+          swipedRef.current = true;
+          if (dx < 0) next();
+          else prev();
+        }
+      }}
+      onPointerCancel={() => {
+        pointerStart.current = null;
+      }}
+      onClickCapture={(e) => {
+        if (swipedRef.current) {
+          e.preventDefault();
+          e.stopPropagation();
+          swipedRef.current = false;
+        }
+      }}
     >
       <div
         className="relative mx-auto flex items-center justify-center"

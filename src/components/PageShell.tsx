@@ -14,7 +14,7 @@ export function PageShell({ children }: { children: ReactNode }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="pt-32"
+        className="overflow-x-clip pt-28 sm:pt-32"
       >
         {children}
       </motion.main>
@@ -33,7 +33,7 @@ export function PageHeader({
   subtitle?: string;
 }) {
   return (
-    <section className="container mx-auto px-4 py-16 md:py-24 text-center relative">
+    <section className="container mx-auto px-4 py-12 sm:py-16 md:py-24 text-center relative">
       {eyebrow && (
         <motion.span
           initial={{ opacity: 0, y: 10 }}
@@ -48,7 +48,7 @@ export function PageHeader({
         per="word"
         preset="blur"
         delay={0.1}
-        className="text-5xl md:text-7xl font-bold text-petrol dark:text-teal-100 leading-[1.05] max-w-5xl mx-auto"
+        className="text-4xl sm:text-5xl md:text-7xl font-bold text-petrol dark:text-teal-100 leading-[1.05] max-w-5xl mx-auto"
       >
         {title}
       </TextEffect>

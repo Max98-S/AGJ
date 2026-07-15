@@ -117,7 +117,7 @@ function Home() {
                   as="h1"
                   per="char"
                   preset="blur"
-                  className="text-4xl sm:text-6xl md:text-8xl font-display font-extrabold leading-[0.95] text-petrol tracking-tight"
+                  className="text-[clamp(1.75rem,8.5vw,2.25rem)] sm:text-6xl md:text-8xl font-display font-extrabold leading-[0.95] text-petrol tracking-tight"
                 >
                   AGJCONFIN
                 </TextEffect>
@@ -137,10 +137,10 @@ function Home() {
                 initial={{ opacity: 0, x: -40, width: 0 }}
                 animate={{ opacity: 1, x: 0, width: "auto" }}
                 transition={{ delay: 0.7, duration: 0.6 }}
-                className="mt-8 inline-block"
+                className="mt-6 sm:mt-8 inline-block max-w-full"
               >
-                <div className="petrol-ribbon px-8 py-4 pr-14">
-                  <span className="text-xl md:text-2xl font-display font-bold tracking-wider">
+                <div className="petrol-ribbon px-5 py-3 pr-11 sm:px-8 sm:py-4 sm:pr-14">
+                  <span className="text-base sm:text-xl md:text-2xl font-display font-bold tracking-wider">
                     CONSULENZA FINANZIARIA
                   </span>
                 </div>
@@ -287,7 +287,10 @@ function Home() {
           </p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5" style={{ perspective: 1000 }}>
+        <div
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-5"
+          style={{ perspective: 1000 }}
+        >
           {highlights.map((h, i) => (
             <motion.div
               key={h.title}
@@ -297,7 +300,7 @@ function Home() {
               transition={{ delay: i * 0.08 }}
               whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
               whileTap={{ scale: 0.96, transition: { duration: 0.1 } }}
-              className="aspect-square"
+              className="sm:aspect-square"
             >
               <button
                 type="button"
@@ -307,11 +310,13 @@ function Home() {
               >
                 <GlassCard className="h-full flex flex-col">
                   <CardHint />
-                  <div className="w-12 h-12 rounded-2xl glass-petrol flex items-center justify-center mb-4 shrink-0 transition-transform duration-500 tr-premium group-hover:scale-110 group-hover:-rotate-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl glass-petrol flex items-center justify-center mb-3 sm:mb-4 shrink-0 transition-transform duration-500 tr-premium group-hover:scale-110 group-hover:-rotate-3">
                     <h.icon size={22} />
                   </div>
-                  <h3 className="font-display font-semibold text-lg text-petrol">{h.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-2 line-clamp-3 opacity-85 transition-opacity duration-500 group-hover:opacity-100">
+                  <h3 className="font-display font-semibold text-base sm:text-lg text-petrol">
+                    {h.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1.5 sm:mt-2 line-clamp-2 sm:line-clamp-3 opacity-85 transition-opacity duration-500 group-hover:opacity-100">
                     {h.desc}
                   </p>
                 </GlassCard>

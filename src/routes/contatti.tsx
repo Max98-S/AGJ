@@ -27,7 +27,12 @@ const contacts = [
     value: "info@agjconfin.it",
     href: "mailto:info@agjconfin.it",
   },
-  { icon: MapPin, label: "Sede", value: "Via Calcutta, 08 — Roma (RM) 00144" },
+  {
+    icon: MapPin,
+    label: "Sede",
+    value: "Via Calcutta, 08 — Roma (RM) 00144",
+    href: "https://www.google.com/maps/search/?api=1&query=Via%20Calcutta%208%2C%2000144%20Roma%20RM",
+  },
   { icon: Globe, label: "Web", value: "www.agjconfin.com", href: "https://www.agjconfin.com" },
 ];
 

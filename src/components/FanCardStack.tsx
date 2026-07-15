@@ -158,15 +158,31 @@ export function FanCardStack({
         </p>
       </div>
 
-      {/* ---- Mobile: plain readable list, nothing hidden ---- */}
-      <div className="grid gap-4 md:hidden">
-        {items.map((item) => (
-          <GlassCard key={item.title} className="h-full">
-            <item.icon className="mb-3 text-violet-glow" size={24} />
-            <h3 className={cn("font-semibold", titleFont(item.title))}>{item.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
-          </GlassCard>
-        ))}
+      {/* ---- Mobile / small tablet: swipeable snap carousel (no endless list) ---- */}
+      <div className="md:hidden">
+        <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {items.map((item) => (
+            <div key={item.title} className="w-[78%] shrink-0 snap-center sm:w-[46%]">
+              <GlassCard className="h-full">
+                <div className="glass-petrol mb-3 flex h-11 w-11 items-center justify-center rounded-xl">
+                  <item.icon size={20} />
+                </div>
+                <h3
+                  className={cn(
+                    "font-semibold text-petrol dark:text-teal-100",
+                    titleFont(item.title),
+                  )}
+                >
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+              </GlassCard>
+            </div>
+          ))}
+        </div>
+        <p className="mt-1 text-center text-[11px] uppercase tracking-wider text-muted-foreground/70">
+          Scorri per esplorare →
+        </p>
       </div>
     </div>
   );

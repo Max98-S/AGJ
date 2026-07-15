@@ -71,6 +71,20 @@ export function ServiceCardStackSection({
 }) {
   const [openCard, setOpenCard] = useState<ServiceCard | null>(null);
 
+  // The card stack uses fixed pixel dimensions; on phones a 400px-wide card
+  // overflows and clips. Measure the viewport and shrink the deck to fit,
+  // keeping the original 400:420 proportion. Desktop stays 400x420.
+  const [dims, setDims] = useState({ w: 400, h: 420 });
+  useEffect(() => {
+    const compute = () => {
+      const w = Math.max(248, Math.min(400, window.innerWidth - 44));
+      setDims({ w, h: Math.round(w * 1.05) });
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+
   useEffect(() => {
     if (!openCard) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -96,8 +110,8 @@ export function ServiceCardStackSection({
 
       <CardStack
         items={serviceCards}
-        cardWidth={400}
-        cardHeight={420}
+        cardWidth={dims.w}
+        cardHeight={dims.h}
         autoAdvance
         intervalMs={4200}
         renderCard={(item, { active }) => (
@@ -137,6 +151,10 @@ export function ServiceCardStackSection({
           </div>
         )}
       />
+
+      <p className="mt-3 text-center text-[11px] uppercase tracking-wider text-muted-foreground/70 md:hidden">
+        Scorri o tocca una card →
+      </p>
 
       {/* Modale "più info" — al click sulla card attiva: si alza, si gira, blur sullo sfondo */}
       <AnimatePresence>
