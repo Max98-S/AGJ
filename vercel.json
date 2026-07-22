@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/bandi",
+      "schedule": "0 6 * * *"
+    }
+  ]
+}

@@ -10,10 +10,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "@tanstack/react-router";
 
 const CAT_STYLE: Record<BandiCategory, string> = {
-  Regionale: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
-  Nazionale: "bg-petrol/15 text-petrol dark:text-teal-200",
-  Europeo: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
-  Fiscale: "bg-amber-500/15 text-amber-700 dark:text-amber-300",
+  Regioni: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+  Ministeri: "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300",
+  Europa: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
+  Fiscalità: "bg-red-500/15 text-red-700 dark:text-red-300",
+  Enti: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300",
+  Finanziarie: "bg-amber-500/15 text-amber-700 dark:text-amber-300",
+  Energia: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-300",
+  Startup: "bg-violet-500/15 text-violet-700 dark:text-violet-300",
+  Agricoltura: "bg-green-500/15 text-green-700 dark:text-green-300",
+  Export: "bg-teal-500/15 text-teal-700 dark:text-teal-300",
+  Camere: "bg-orange-500/15 text-orange-700 dark:text-orange-300",
+  "Terzo settore": "bg-rose-500/15 text-rose-700 dark:text-rose-300",
+  Portali: "bg-petrol/15 text-petrol dark:text-teal-200",
 };
 
 function fmtDate(iso: string | null) {
@@ -159,11 +168,11 @@ function CardSkeleton() {
 }
 
 interface BandiFeedProps {
-  category: BandiCategory;
+  categories: BandiCategory[];
   label: string;
 }
 
-export function BandiFeed({ category, label }: BandiFeedProps) {
+export function BandiFeed({ categories, label }: BandiFeedProps) {
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: ["bandi-news"],
     queryFn: () => getBandiNews(),
@@ -172,7 +181,7 @@ export function BandiFeed({ category, label }: BandiFeedProps) {
     refetchOnWindowFocus: false,
   });
 
-  const items = (data?.items ?? []).filter((i) => i.category === category);
+  const items = (data?.items ?? []).filter((i) => categories.includes(i.category));
   const updated = data?.updatedAt ? fmtDate(data.updatedAt) : null;
   const [featured, ...rest] = items;
 

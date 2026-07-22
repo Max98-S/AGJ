@@ -25,10 +25,19 @@ function esc(s: string) {
 }
 
 const CAT_COLOR: Record<string, string> = {
-  Regionale: "#059669",
-  Nazionale: "#0d4a5c",
-  Europeo: "#2563eb",
-  Fiscale: "#b45309",
+  Regioni: "#059669",
+  Ministeri: "#4f46e5",
+  Europa: "#2563eb",
+  Fiscalità: "#dc2626",
+  Enti: "#0891b2",
+  Finanziarie: "#b45309",
+  Energia: "#ca8a04",
+  Startup: "#7c3aed",
+  Agricoltura: "#16a34a",
+  Export: "#0d9488",
+  Camere: "#ea580c",
+  "Terzo settore": "#e11d48",
+  Portali: "#0d4a5c",
 };
 
 /** Aggiunge (o re-iscrive) un contatto all'Audience Resend. No-op se non configurata. */

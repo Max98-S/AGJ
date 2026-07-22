@@ -18,7 +18,7 @@ const TIPO_CONFIG = {
     title: "Finanziamenti Regionali",
     subtitle:
       "Accesso ai fondi regionali cofinanziati dall'Unione Europea tramite i Programmi Operativi Regionali (POR) e i Piani Nazionali di Ripresa e Resilienza (PNRR).",
-    bandiCategory: "Regionale" as BandiCategory,
+    bandiCategory: ["Regioni", "Finanziarie"] as BandiCategory[],
     bandiLabel: "Regionali",
     highlights: [
       "Analisi dei POR/FESR attivi nella regione target",
@@ -38,7 +38,18 @@ Il nostro team monitora in modo continuativo gli avvisi pubblici di tutte le Reg
     title: "Finanziamenti Nazionali",
     subtitle:
       "Agevolazioni economiche erogate dai Ministeri e dagli Enti nazionali preposti: contributi a fondo perduto, finanziamenti agevolati, crediti d'imposta e garanzie pubbliche.",
-    bandiCategory: "Nazionale" as BandiCategory,
+    bandiCategory: [
+      "Ministeri",
+      "Enti",
+      "Portali",
+      "Fiscalità",
+      "Energia",
+      "Startup",
+      "Agricoltura",
+      "Export",
+      "Camere",
+      "Terzo settore",
+    ] as BandiCategory[],
     bandiLabel: "Nazionali",
     highlights: [
       "Mappatura degli strumenti MIMIT, MUR, Invitalia, SIMEST, SACE",
@@ -58,7 +69,7 @@ Agjconfin dispone di una conoscenza approfondita di tutti questi strumenti, matu
     title: "Finanziamenti Europei",
     subtitle:
       "Programmi quadro dell'Unione Europea per Ricerca, Sviluppo e Innovazione: Horizon Europe, European Innovation Council (EIC), LIFE, COSME e strumenti di finanza blended.",
-    bandiCategory: "Europeo" as BandiCategory,
+    bandiCategory: ["Europa"] as BandiCategory[],
     bandiLabel: "Europei",
     highlights: [
       "Valutazione di eligibilità per Horizon Europe e EIC",
@@ -195,7 +206,7 @@ function ServiziDetail() {
       </section>
 
       {/* Feed bandi filtrato per categoria */}
-      <BandiFeed category={bandiCategory} label={bandiLabel} />
+      <BandiFeed categories={bandiCategory} label={bandiLabel} />
     </PageShell>
   );
 }

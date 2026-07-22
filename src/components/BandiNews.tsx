@@ -3,7 +3,30 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
-import { ArrowUpRight, ArrowRight, RefreshCw, Newspaper, Clock } from "lucide-react";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  RefreshCw,
+  Newspaper,
+  Clock,
+  Search,
+  X,
+  LayoutGrid,
+  MapPin,
+  Building2,
+  Star,
+  Calculator,
+  Network,
+  Banknote,
+  Zap,
+  Rocket,
+  Sprout,
+  Ship,
+  Store,
+  HeartHandshake,
+  Landmark,
+  type LucideIcon,
+} from "lucide-react";
 
 import { getBandiNews } from "@/lib/api/bandi.functions";
 import type { BandiCategory, BandoNewsItem } from "@/lib/bandi.server";
@@ -11,20 +34,48 @@ import { BandoCover } from "@/components/BandoCover";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const CATEGORIES: Array<"Tutte" | BandiCategory> = [
-  "Tutte",
-  "Regionale",
-  "Nazionale",
-  "Europeo",
-  "Fiscale",
-];
+// Colore + icona per ciascuna area monitorata (usati dai "pulsantini" filtro).
+const CAT_META: Record<BandiCategory, { color: string; icon: LucideIcon }> = {
+  Regioni: { color: "#059669", icon: MapPin },
+  Ministeri: { color: "#4f46e5", icon: Building2 },
+  Europa: { color: "#2563eb", icon: Star },
+  Fiscalità: { color: "#dc2626", icon: Calculator },
+  Enti: { color: "#0891b2", icon: Network },
+  Finanziarie: { color: "#b45309", icon: Banknote },
+  Energia: { color: "#ca8a04", icon: Zap },
+  Startup: { color: "#7c3aed", icon: Rocket },
+  Agricoltura: { color: "#16a34a", icon: Sprout },
+  Export: { color: "#0d9488", icon: Ship },
+  Camere: { color: "#ea580c", icon: Store },
+  "Terzo settore": { color: "#e11d48", icon: HeartHandshake },
+  Portali: { color: "#0d4a5c", icon: Landmark },
+};
 
 const CAT_STYLE: Record<BandiCategory, string> = {
-  Regionale: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
-  Nazionale: "bg-petrol/15 text-petrol dark:text-teal-200",
-  Europeo: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
-  Fiscale: "bg-amber-500/15 text-amber-700 dark:text-amber-300",
+  Regioni: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+  Ministeri: "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300",
+  Europa: "bg-blue-500/15 text-blue-700 dark:text-blue-300",
+  Fiscalità: "bg-red-500/15 text-red-700 dark:text-red-300",
+  Enti: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300",
+  Finanziarie: "bg-amber-500/15 text-amber-700 dark:text-amber-300",
+  Energia: "bg-yellow-500/15 text-yellow-700 dark:text-yellow-300",
+  Startup: "bg-violet-500/15 text-violet-700 dark:text-violet-300",
+  Agricoltura: "bg-green-500/15 text-green-700 dark:text-green-300",
+  Export: "bg-teal-500/15 text-teal-700 dark:text-teal-300",
+  Camere: "bg-orange-500/15 text-orange-700 dark:text-orange-300",
+  "Terzo settore": "bg-rose-500/15 text-rose-700 dark:text-rose-300",
+  Portali: "bg-petrol/15 text-petrol dark:text-teal-200",
 };
+
+const CATEGORIES = Object.keys(CAT_META) as BandiCategory[];
+
+/** Normalizza per una ricerca accent-insensitive. */
+function norm(s: string) {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
 
 function fmtDate(iso: string | null) {
   if (!iso) return null;
@@ -176,7 +227,8 @@ function CardSkeleton() {
 }
 
 export function BandiNews() {
-  const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("Tutte");
+  const [cat, setCat] = useState<BandiCategory | "Tutte">("Tutte");
+  const [query, setQuery] = useState("");
 
   const { data, isLoading, isError, isFetching, refetch } = useQuery({
     queryKey: ["bandi-news"],
@@ -186,7 +238,23 @@ export function BandiNews() {
     refetchOnWindowFocus: false,
   });
 
-  const items = (data?.items ?? []).filter((i) => cat === "Tutte" || i.category === cat);
+  const all = data?.items ?? [];
+
+  // 1) Filtro testuale (su titolo, fonte, categoria, sommario).
+  const q = norm(query.trim());
+  const textFiltered = q
+    ? all.filter((i) =>
+        norm(`${i.title} ${i.source} ${i.category} ${i.snippet}`).includes(q),
+      )
+    : all;
+
+  // 2) Conteggi per categoria (riflettono la ricerca testuale).
+  const counts: Record<string, number> = { Tutte: textFiltered.length };
+  for (const c of CATEGORIES) counts[c] = 0;
+  for (const it of textFiltered) counts[it.category] = (counts[it.category] ?? 0) + 1;
+
+  // 3) Filtro per categoria.
+  const items = cat === "Tutte" ? textFiltered : textFiltered.filter((i) => i.category === cat);
   const updated = data?.updatedAt ? fmtDate(data.updatedAt) : null;
   const [featured, ...rest] = items;
 
@@ -206,7 +274,7 @@ export function BandiNews() {
         </h2>
         <p className="mt-6 text-muted-foreground">
           Una redazione automatica che monitora le fonti regionali, nazionali ed europee e seleziona
-          ogni giorno le opportunità che contano.
+          ogni giorno le opportunità che contano. Cerca per parola chiave o filtra per categoria.
         </p>
       </motion.div>
 
@@ -220,21 +288,74 @@ export function BandiNews() {
         <NewsletterSignup />
       </motion.div>
 
-      {/* Filtri + aggiornamento */}
-      <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
-        {CATEGORIES.map((c) => (
+      {/* Ricerca */}
+      <div className="relative mx-auto mb-5 max-w-xl">
+        <Search
+          size={18}
+          className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
+        />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Cerca un bando, un ente, una Regione…"
+          aria-label="Cerca tra i bandi"
+          className="glass w-full rounded-2xl py-3.5 pl-12 pr-11 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-petrol/40 dark:focus:ring-teal-400/40"
+        />
+        {query && (
           <button
-            key={c}
-            onClick={() => setCat(c)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-              cat === c
-                ? "bg-petrol text-white dark:bg-teal-400 dark:text-petrol-deep"
-                : "glass text-foreground/70 hover:text-foreground"
-            }`}
+            onClick={() => setQuery("")}
+            aria-label="Cancella ricerca"
+            className="absolute right-3 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-full text-muted-foreground transition hover:bg-foreground/5 hover:text-foreground"
           >
-            {c}
+            <X size={15} />
           </button>
-        ))}
+        )}
+      </div>
+
+      {/* "Pulsantini" filtro per categoria + aggiornamento */}
+      <div className="mb-3 flex flex-wrap items-center justify-center gap-2">
+        <button
+          onClick={() => setCat("Tutte")}
+          className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
+            cat === "Tutte"
+              ? "bg-petrol text-white dark:bg-teal-400 dark:text-petrol-deep"
+              : "glass text-foreground/70 hover:text-foreground"
+          }`}
+        >
+          <LayoutGrid size={13} /> Tutte
+          <span className="opacity-60">{counts.Tutte}</span>
+        </button>
+
+        {CATEGORIES.map((c) => {
+          const isActive = cat === c;
+          const Icon = CAT_META[c].icon;
+          return (
+            <button
+              key={c}
+              onClick={() => setCat(c)}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
+                isActive
+                  ? "text-white dark:text-petrol-deep"
+                  : "glass text-foreground/70 hover:text-foreground"
+              }`}
+              style={isActive ? { backgroundColor: CAT_META[c].color } : undefined}
+            >
+              {isActive ? (
+                <Icon size={13} />
+              ) : (
+                <span
+                  aria-hidden
+                  className="h-2 w-2 rounded-full"
+                  style={{ backgroundColor: CAT_META[c].color }}
+                />
+              )}
+              {c}
+              <span className="opacity-60">{counts[c]}</span>
+            </button>
+          );
+        })}
+
         <button
           onClick={() => refetch()}
           disabled={isFetching}
@@ -245,6 +366,11 @@ export function BandiNews() {
           Aggiorna
         </button>
       </div>
+
+      <p className="mb-8 text-center text-xs text-muted-foreground">
+        {items.length} {items.length === 1 ? "bando trovato" : "bandi trovati"}
+        {cat !== "Tutte" && ` · ${cat}`}
+      </p>
 
       {isLoading ? (
         <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -264,11 +390,26 @@ export function BandiNews() {
           )}
         </div>
       ) : (
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          {isError
-            ? "Impossibile caricare le notizie al momento. Riprova più tardi."
-            : "Nessuna notizia in questa categoria al momento."}
-        </p>
+        <div className="glass mx-auto max-w-md rounded-2xl p-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            {isError
+              ? "Impossibile caricare le notizie al momento. Riprova più tardi."
+              : query
+                ? `Nessun bando corrisponde a “${query}”${cat !== "Tutte" ? ` in ${cat}` : ""}.`
+                : "Nessun bando in questa categoria al momento."}
+          </p>
+          {(query || cat !== "Tutte") && !isError && (
+            <button
+              onClick={() => {
+                setQuery("");
+                setCat("Tutte");
+              }}
+              className="mt-4 rounded-full bg-petrol px-4 py-1.5 text-sm font-medium text-white transition hover:scale-[1.03] dark:bg-teal-400 dark:text-petrol-deep"
+            >
+              Azzera filtri
+            </button>
+          )}
+        </div>
       )}
 
       {updated && (

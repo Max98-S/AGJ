@@ -1,7 +1,22 @@
 "use client";
 
 import { useMemo } from "react";
-import { Landmark, MapPin, Globe2, Receipt, type LucideIcon } from "lucide-react";
+import {
+  Landmark,
+  MapPin,
+  Globe2,
+  Receipt,
+  Building2,
+  Network,
+  Banknote,
+  Zap,
+  Rocket,
+  Sprout,
+  Ship,
+  Store,
+  HeartHandshake,
+  type LucideIcon,
+} from "lucide-react";
 import type { BandiCategory } from "@/lib/bandi.server";
 
 /**
@@ -16,18 +31,38 @@ import type { BandiCategory } from "@/lib/bandi.server";
 
 type Palette = { from: string; via: string; to: string; glyphBg: string };
 
+const GLYPH_BG = "rgba(255,255,255,0.17)";
+
 const PALETTES: Record<BandiCategory, Palette> = {
-  Regionale: { from: "#0d6b5a", via: "#119077", to: "#1fae8f", glyphBg: "rgba(255,255,255,0.16)" },
-  Nazionale: { from: "#062e3c", via: "#0d4a5c", to: "#2a8aa0", glyphBg: "rgba(255,255,255,0.16)" },
-  Europeo: { from: "#0a2a5c", via: "#1d4f88", to: "#3f7bc4", glyphBg: "rgba(255,255,255,0.18)" },
-  Fiscale: { from: "#7a4b10", via: "#b07a1e", to: "#e0a93a", glyphBg: "rgba(255,255,255,0.20)" },
+  Regioni: { from: "#05614a", via: "#059669", to: "#34d399", glyphBg: GLYPH_BG },
+  Ministeri: { from: "#312e81", via: "#4f46e5", to: "#818cf8", glyphBg: GLYPH_BG },
+  Europa: { from: "#1e3a8a", via: "#2563eb", to: "#60a5fa", glyphBg: GLYPH_BG },
+  Fiscalità: { from: "#7f1d1d", via: "#dc2626", to: "#f87171", glyphBg: GLYPH_BG },
+  Enti: { from: "#155e75", via: "#0891b2", to: "#22d3ee", glyphBg: GLYPH_BG },
+  Finanziarie: { from: "#7c2d12", via: "#b45309", to: "#f59e0b", glyphBg: GLYPH_BG },
+  Energia: { from: "#854d0e", via: "#ca8a04", to: "#facc15", glyphBg: GLYPH_BG },
+  Startup: { from: "#4c1d95", via: "#7c3aed", to: "#a78bfa", glyphBg: GLYPH_BG },
+  Agricoltura: { from: "#14532d", via: "#16a34a", to: "#4ade80", glyphBg: GLYPH_BG },
+  Export: { from: "#115e59", via: "#0d9488", to: "#2dd4bf", glyphBg: GLYPH_BG },
+  Camere: { from: "#7c2d12", via: "#ea580c", to: "#fb923c", glyphBg: GLYPH_BG },
+  "Terzo settore": { from: "#881337", via: "#e11d48", to: "#fb7185", glyphBg: GLYPH_BG },
+  Portali: { from: "#062e3c", via: "#0d4a5c", to: "#2a8aa0", glyphBg: GLYPH_BG },
 };
 
 const ICONS: Record<BandiCategory, LucideIcon> = {
-  Regionale: MapPin,
-  Nazionale: Landmark,
-  Europeo: Globe2,
-  Fiscale: Receipt,
+  Regioni: MapPin,
+  Ministeri: Landmark,
+  Europa: Globe2,
+  Fiscalità: Receipt,
+  Enti: Network,
+  Finanziarie: Banknote,
+  Energia: Zap,
+  Startup: Rocket,
+  Agricoltura: Sprout,
+  Export: Ship,
+  Camere: Store,
+  "Terzo settore": HeartHandshake,
+  Portali: Building2,
 };
 
 function hashString(s: string): number {

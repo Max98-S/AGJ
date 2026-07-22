@@ -6,6 +6,7 @@ import { CountUp } from "@/components/CountUp";
 import { cn } from "@/lib/utils";
 import { TrendingUp, Building2, Award, Rocket, BarChart3 } from "lucide-react";
 import { BandiNews } from "@/components/BandiNews";
+/*import { RisorseBandi } from "@/components/RisorseBandi";*/
 import { OminiScrollLayer } from "@/components/OminiScrollLayer";
 
 export const Route = createFileRoute("/bandi-opportunita")({
@@ -200,6 +201,8 @@ function Bandi() {
           ))}
         </div>
       </section>
+
+      {/* <RisorseBandi /> */}
 
       <BandiNews />
     </PageShell>
